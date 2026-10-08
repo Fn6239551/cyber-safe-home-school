@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cyber Safe Home | البيت الذكي الآمن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#D9F1EF; --bg2:#EEF9F7; --ink:#12324A; --muted:#48637A; --card:#FFFFFF; --line:#BFDCDA;
+  --wall:#FBFEFD; --floor:#EAF6F4;
+  --accent:#0B7F8A; --accent-d:#075E67; --on-accent:#FFFFFF; --sun:#FFC53D;
+  --red:#E5484D; --orange:#F08A1C; --green:#1E9E5A;
+  --red-bg:#FDE6E8; --red-tx:#9E1F2B; --or-bg:#FFEBD0; --or-tx:#8A4500; --gr-bg:#DCF5E6; --gr-tx:#0F6A38;
+  --rt-entrance:#E6EEFA; --rt-living:#E6F5EC; --rt-child:#FDEBF3; --rt-office:#ECEEFB; --rt-kitchen:#FFF2DA;
+  --shadow:0 10px 30px rgba(18,50,74,.14);
+  --f:'Cairo','Tahoma','Segoe UI',system-ui,sans-serif;
+}
+:root[data-role="parent"]{--accent:#4450C8;--accent-d:#2F3AA0}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1E2E; --bg2:#0F2A3E; --ink:#E6F3F5; --muted:#A5BFCB; --card:#14324A; --line:#24506B;
+    --wall:#12293D; --floor:#183853; --accent:#4CD2DE; --accent-d:#2BA9B5; --on-accent:#062A33;
+    --red-bg:#4A1D25; --red-tx:#FFB3BA; --or-bg:#4A3212; --or-tx:#FFCF8A; --gr-bg:#12402A; --gr-tx:#9DEBBE;
+    --rt-entrance:#193456; --rt-living:#17402F; --rt-child:#40203A; --rt-office:#25295A; --rt-kitchen:#4A3A18;
+    --shadow:0 10px 30px rgba(0,0,0,.4);
+  }
+  :root[data-role="parent"]:not([data-theme="light"]){--accent:#9AA5FF;--accent-d:#7683F0;--on-accent:#101647}
+}
+:root[data-theme="dark"]{
+  --bg:#0B1E2E; --bg2:#0F2A3E; --ink:#E6F3F5; --muted:#A5BFCB; --card:#14324A; --line:#24506B;
+  --wall:#12293D; --floor:#183853; --accent:#4CD2DE; --accent-d:#2BA9B5; --on-accent:#062A33;
+  --red-bg:#4A1D25; --red-tx:#FFB3BA; --or-bg:#4A3212; --or-tx:#FFCF8A; --gr-bg:#12402A; --gr-tx:#9DEBBE;
+  --rt-entrance:#193456; --rt-living:#17402F; --rt-child:#40203A; --rt-office:#25295A; --rt-kitchen:#4A3A18;
+  --shadow:0 10px 30px rgba(0,0,0,.4);
+}
+:root[data-theme="dark"][data-role="parent"]{--accent:#9AA5FF;--accent-d:#7683F0;--on-accent:#101647}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;font-family:var(--f);font-size:17px;line-height:1.65;color:var(--ink);
+  background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);background-color:var(--bg)}
+h1,h2,h3,h4{font-family:var(--f);font-weight:800;line-height:1.3;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:4px solid var(--sun);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:8px 26px;border:0;border-radius:16px;
+  background:var(--accent);color:var(--on-accent);font-weight:800;font-size:18px;box-shadow:0 5px 0 var(--accent-d);transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--accent-d)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--accent-d)}
+.btn.ghost{background:var(--card);color:var(--ink);box-shadow:0 5px 0 var(--line);border:2px solid var(--line)}
+.btn.danger{background:var(--red);color:#fff;box-shadow:0 5px 0 #A8262B}
+.btn.sm{min-height:44px;padding:4px 16px;font-size:15.5px}
+.btn[disabled]{opacity:.45;pointer-events:none}
+
+/* welcome + auth */
+.screen-wrap{max-width:1080px;margin:0 auto;padding:28px 20px 60px}
+.welcome{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;min-height:82vh}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:22px}
+.welcome h1{font-size:clamp(40px,7vw,78px);letter-spacing:0;margin:14px 0 10px;line-height:1.2}
+.welcome h1 span{display:block;color:var(--accent)}
+.lead{font-size:19px;max-width:34em;color:var(--muted);margin:0 0 22px}
+.flow{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px;padding:0;list-style:none}
+.flow li{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:6px 14px;font-weight:700;font-size:15px}
+.hero-house{position:relative;aspect-ratio:1/1;max-width:440px;width:100%;justify-self:center}
+.hero-roof{position:absolute;left:8%;right:8%;top:6%;height:30%;background:linear-gradient(135deg,var(--accent),var(--accent-d));clip-path:polygon(20% 0,80% 0,100% 100%,0 100%)}
+.hero-body{position:absolute;left:8%;right:8%;top:35%;bottom:8%;border:5px solid var(--ink);border-radius:0 0 26px 26px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:5px;background-color:var(--ink);overflow:hidden}
+.hero-body div{background:var(--floor);display:grid;place-items:center}
+.hero-body span{display:grid;place-items:center;width:1.5em;height:1.5em;font-size:clamp(34px,7vw,54px);border-radius:50%;border:4px solid var(--red);background:var(--card);animation:hh 6s infinite}
+.hero-body svg{width:.62em;height:.62em}
+.hero-body div:nth-child(2) span{animation-delay:1.2s}.hero-body div:nth-child(3) span{animation-delay:2.4s}.hero-body div:nth-child(4) span{animation-delay:3.6s}
+@keyframes hh{0%,25%{border-color:var(--red)}35%,55%{border-color:var(--orange)}65%,100%{border-color:var(--green)}}
+.hero-shield{position:absolute;left:50%;top:0;transform:translateX(-50%);font-size:64px}
+h2.sec{font-size:clamp(28px,5vw,44px);margin-bottom:8px}
+.atabs{display:flex;gap:8px;margin:18px 0 6px;flex-wrap:wrap}
+.atab{border:3px solid var(--line);background:var(--card);border-radius:14px;min-height:48px;padding:4px 18px;font-weight:800}
+.atab[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:var(--on-accent)}
+.alert{border-radius:14px;padding:10px 16px;font-weight:700;margin:10px 0;background:var(--red-bg);color:var(--red-tx);border:2px solid var(--red)}
+.alert.ok{background:var(--gr-bg);color:var(--gr-tx);border-color:var(--green)}
+.pcards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0}
+.pcard{text-align:start;background:var(--card);border:4px solid var(--line);border-radius:26px;padding:22px;box-shadow:var(--shadow);position:relative;transition:transform .15s,border-color .15s}
+.pcard:hover{transform:translateY(-3px)}
+.pcard[aria-checked="true"]{border-color:var(--pc)}
+.pcard[aria-checked="true"]::after{content:"✓ تم الاختيار";position:absolute;top:16px;inset-inline-end:16px;background:var(--pc);color:#fff;font-weight:800;border-radius:99px;padding:0 14px;font-size:14px}
+.pcard.kid{--pc:#0B7F8A}.pcard.parent{--pc:#4450C8}
+.pcard .big{font-size:56px;line-height:1.2}
+.pcard h3{font-size:28px;margin:4px 0 2px}
+.pcard .age{color:var(--muted);font-weight:700;margin:0 0 8px}
+.pcard ul{margin:8px 0 0;padding-inline-start:22px;font-size:15.5px}
+.pcard .cls{margin-top:12px;background:var(--bg2);border-radius:12px;padding:6px 12px;font-size:14.5px;font-weight:700}
+.nickrow{display:flex;flex-wrap:wrap;gap:14px;align-items:end}
+.nickrow label{display:grid;gap:4px;font-weight:800}
+.nickrow input{min-height:52px;border:3px solid var(--line);border-radius:14px;padding:0 16px;background:var(--card);width:min(320px,100%);font-size:18px}
+
+/* shell */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--card);border-bottom:3px solid var(--line);box-shadow:0 4px 18px rgba(18,50,74,.08)}
+.top-in{max-width:1200px;margin:0 auto;padding:8px 18px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center}
+.brand{font-weight:800;font-size:19px;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.who{font-size:13px;font-weight:700;color:var(--muted);display:block;line-height:1.3}
+.lvl{background:none;border:0;padding:0;text-align:start;display:grid;gap:2px;min-width:0}
+.lvl-h{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;font-weight:800}
+.lvl-h b{font-size:26px;line-height:1.1}
+.lvl-h em{font-style:normal;font-size:14px;padding:0 10px;border-radius:99px;background:var(--bg2)}
+.bar{display:block;height:18px;border-radius:99px;background:var(--bg2);border:2px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(270deg,var(--red),var(--orange) 50%,var(--green));background-size:var(--bw,100%) 100%;background-repeat:no-repeat;background-position:right;transition:width .9s cubic-bezier(.2,.9,.3,1)}
+.stats{display:flex;gap:8px;align-items:center}
+.stat{background:var(--bg2);border-radius:14px;padding:2px 12px;text-align:center;min-width:80px}
+.stat b{display:block;font-size:20px;line-height:1.3}
+.stat span{font-size:12.5px;font-weight:700;color:var(--muted)}
+.stat.bump{animation:bump .5s}
+@keyframes bump{40%{transform:scale(1.15);background:var(--sun);color:#12324A}}
+.swap{border:2px solid var(--line);background:var(--card);border-radius:12px;min-height:44px;padding:0 12px;font-weight:800;font-size:14px}
+.tabs{max-width:1200px;margin:0 auto;padding:12px 18px 0;display:flex;gap:6px;flex-wrap:wrap}
+.tab{border:0;background:transparent;font-weight:800;font-size:16px;min-height:44px;padding:4px 14px;border-radius:14px;display:flex;gap:6px;align-items:center}
+.tab[aria-current="page"]{background:var(--accent);color:var(--on-accent)}
+.tab:not([aria-current="page"]):hover{background:var(--card)}
+main{max-width:1200px;margin:0 auto;padding:14px 18px 70px}
+.page{display:none}.page.on{display:block}
+.pagehead{margin:8px 0 16px}.pagehead h2{font-size:32px}.pagehead p{margin:4px 0 0;color:var(--muted)}
+
+/* home */
+.locbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.chip{border:3px solid var(--line);background:var(--card);border-radius:99px;min-height:46px;padding:2px 16px;font-weight:800;display:flex;gap:6px;align-items:center}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:var(--on-accent)}
+.chip small{background:var(--or-bg);color:var(--or-tx);border-radius:99px;padding:0 8px;font-size:13px}
+.chip small.ok{background:var(--gr-bg);color:var(--gr-tx)}
+.guide{background:var(--card);border:3px dashed var(--accent);border-radius:20px;padding:10px 16px;display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.guide p{margin:0;flex:1;font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.badge{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:0 10px;font-weight:800;font-size:13.5px;white-space:nowrap;line-height:1.6}
+.b-vuln{background:var(--red-bg);color:var(--red-tx);border:2px solid var(--red)}
+.b-review{background:var(--or-bg);color:var(--or-tx);border:2px solid var(--orange)}
+.b-secure{background:var(--gr-bg);color:var(--gr-tx);border:2px solid var(--green)}
+.house{max-width:1060px;margin:0 auto}
+.roof{position:relative;height:130px}
+.roof::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--accent),var(--accent-d));clip-path:polygon(16% 0,84% 0,100% 100%,0 100%)}
+.roof .chim{position:absolute;left:20%;top:-16px;width:30px;height:40px;background:var(--ink);border-radius:6px 6px 0 0}
+.shieldbox{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:grid;justify-items:center;color:#fff;font-weight:800;font-size:13px;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.shield{width:74px;height:88px;display:block;overflow:visible}
+.shield .track{fill:rgba(255,255,255,.28);stroke:#fff;stroke-width:4}
+.shield .fill{fill:var(--red)}.shield.mid .fill{fill:var(--orange)}.shield.hi .fill{fill:var(--green)}
+.shield text{font-weight:800;font-size:28px;fill:#fff;paint-order:stroke;stroke:#12324A;stroke-width:5px;stroke-linejoin:round}
+.hbody{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;background:var(--ink);border:5px solid var(--ink);border-radius:0 0 26px 26px;overflow:hidden;box-shadow:var(--shadow)}
+.room{grid-column:span 2;padding:12px 12px 16px;position:relative;cursor:pointer;background:var(--floor);
+  background-image:repeating-linear-gradient(90deg,transparent 0 46px,rgba(18,50,74,.05) 46px 48px)}
+.room.r-entrance{grid-column:span 3;background-color:var(--rt-entrance)}
+.room.r-living{grid-column:span 3;background-color:var(--rt-living)}
+.room.r-child{background-color:var(--rt-child)}.room.r-office{background-color:var(--rt-office)}.room.r-kitchen{background-color:var(--rt-kitchen)}
+.room.cur{box-shadow:inset 0 0 0 5px var(--sun)}
+.rl{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;font-weight:800;font-size:18px}
+.rl small{font-size:12.5px;font-weight:800;color:var(--muted);white-space:nowrap}
+.here{display:none;font-size:13px;font-weight:800;background:var(--sun);color:#12324A;border-radius:99px;padding:0 10px}
+.room.cur .here{display:inline-block}
+.devs{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.dev{position:relative;flex:1 1 92px;max-width:150px;min-width:88px;background:var(--card);border:4px solid var(--ring,var(--orange));border-radius:20px;padding:10px 4px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;box-shadow:0 5px 0 var(--ring,var(--orange));transition:transform .12s}
+.dev:hover,.dev:focus-visible{transform:translateY(-3px)}
+.ic{width:58px;height:58px;display:grid;place-items:center;font-size:30px;border-radius:50%;background:var(--tint,var(--or-bg));position:relative;color:var(--ink)}
+.ic svg{width:32px;height:32px}
+.dev .nm{font-weight:800;font-size:14px;line-height:1.3}
+.dev.s-review{--ring:var(--orange);--tint:var(--or-bg)}
+.dev.s-vuln{--ring:var(--red);--tint:var(--red-bg)}
+.dev.s-secure{--ring:var(--green);--tint:var(--gr-bg)}
+.dev[data-tip]:hover::after,.dev[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);width:max-content;max-width:190px;
+  background:var(--ink);color:var(--card);font-size:13.5px;font-weight:700;padding:4px 10px;border-radius:10px;z-index:5;pointer-events:none}
+.dev.pop{animation:popd .9s}
+.dev.pop .ic::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:4px solid var(--green);animation:ring 1s ease-out}
+@keyframes popd{30%{transform:scale(1.14)}}
+@keyframes ring{from{transform:scale(.8);opacity:1}to{transform:scale(1.9);opacity:0}}
+.wifi{position:absolute;top:-6px;inset-inline-end:-6px;font-size:15px;background:var(--card);border-radius:50%;width:26px;height:26px;display:grid;place-items:center;border:2px solid var(--line)}
+.ground{height:26px;background:linear-gradient(180deg,#5DBE7B,#3E9E5E);border-radius:0 0 20px 20px;opacity:.9}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.card{background:var(--card);border:3px solid var(--line);border-radius:22px;padding:16px}
+.dcard{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center}
+.dcard h3{font-size:20px}.dcard p{grid-column:1/-1;margin:2px 0;color:var(--muted);font-size:15px}
+.dcard .btn{grid-column:1/-1;margin-top:6px}
+.chal{display:grid;gap:8px}
+.crow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--card);border:3px solid var(--line);border-radius:18px;padding:8px 14px}
+.crow .tick{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:var(--bg2);border:3px solid var(--line)}
+.crow.done .tick{background:var(--green);border-color:var(--green);color:#fff}
+.crow small{color:var(--muted);font-weight:700;display:block}
+.crow.atk{border-color:var(--accent)}
+
+/* modal */
+.overlay{position:fixed;inset:0;z-index:60;background:rgba(10,30,46,.62);display:grid;place-items:center;padding:14px;overflow:auto}
+.sheet{width:min(700px,100%);max-height:calc(100vh - 28px);overflow:auto;background:var(--card);border-radius:28px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:sh .25s ease-out}
+@keyframes sh{from{transform:translateY(18px);opacity:0}}
+.mhead{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.mhead>div{flex:1}.mhead h2{font-size:26px}
+.mic{width:70px;height:70px;border-radius:20px;background:var(--bg2);display:grid;place-items:center;font-size:40px;color:var(--ink)}
+.mic svg{width:42px;height:42px}
+.x{border:0;background:var(--bg2);width:48px;height:48px;border-radius:50%;font-size:20px;font-weight:800}
+.steps{display:flex;gap:6px;margin:0 0 12px;align-items:center;font-weight:800;font-size:14px;color:var(--muted);flex-wrap:wrap}
+.steps i{width:26px;height:8px;border-radius:9px;background:var(--line)}.steps i.d{background:var(--green)}.steps i.c{background:var(--accent)}
+.found{display:flex;gap:10px;align-items:center;border-radius:16px;padding:8px 14px;font-weight:800;margin-bottom:12px}
+.found.bad{background:var(--red-bg);color:var(--red-tx)}.found.neu{background:var(--or-bg);color:var(--or-tx)}
+.scan{display:grid;place-items:center;gap:14px;padding:26px 0;text-align:center}
+.scan .radar{width:130px;height:130px;border-radius:50%;border:4px solid var(--accent);position:relative;overflow:hidden;background:radial-gradient(circle,transparent 30%,rgba(11,127,138,.15) 31% 33%,transparent 34% 60%,rgba(11,127,138,.15) 61% 63%,transparent 64%)}
+.scan .radar::after{content:"";position:absolute;inset:0;background:conic-gradient(from 0deg,var(--accent),transparent 30%);animation:spin 1.1s linear infinite;opacity:.6}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sbar{width:220px;height:12px;border-radius:9px;background:var(--bg2);overflow:hidden}.sbar i{display:block;height:100%;background:var(--accent);animation:load 1.1s linear forwards}
+@keyframes load{from{width:0}to{width:100%}}
+.phoneMsg{background:var(--bg2);border:3px solid var(--line);border-radius:22px 22px 6px 22px;padding:10px 16px;margin-bottom:12px}
+.phoneMsg .from{font-weight:800;font-size:14px;color:var(--muted)}.phoneMsg p{margin:2px 0 0;font-size:18px;font-weight:700}
+.story{background:var(--bg2);border-inline-start:8px solid var(--accent);border-radius:16px;padding:10px 16px;margin-bottom:12px}
+.story b{display:block;font-size:14px;color:var(--accent)}
+.story p{margin:2px 0 0;font-size:17px;font-weight:600;line-height:1.85}
+.scr{background:#0F2436;color:#D8F1F2;border-radius:18px;padding:10px 14px;margin-bottom:12px}
+.scr h4{font-size:17px;margin-bottom:6px;color:#8FE3EA}
+.srow{display:grid;grid-template-columns:1fr auto 26px;gap:8px;padding:5px 0;border-top:1px solid rgba(255,255,255,.14);font-size:16px;align-items:center}
+.srow b{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;direction:ltr;unicode-bidi:plaintext}
+.srow.bad b{color:#FF9AA2}.srow.good b{color:#8FEDB5}
+.q{font-size:21px;margin:6px 0 10px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:center;text-align:start;min-height:58px;border:3px solid var(--line);background:var(--card);border-radius:18px;padding:8px 16px;font-weight:700;font-size:16.5px;box-shadow:0 4px 0 var(--line);transition:transform .1s;line-height:1.6}
+.opt:hover:not([disabled]){transform:translateY(-2px);border-color:var(--accent)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--bg2)}
+.opt .k{flex:none;width:34px;height:34px;border-radius:50%;background:var(--bg2);display:grid;place-items:center;font-size:15px;font-weight:800}
+.opt[aria-pressed="true"] .k{background:var(--accent);color:var(--on-accent)}
+.opt.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red-tx)}
+.opt.wrong .k{background:var(--red);color:#fff}
+.opt small{display:block;font-weight:600;font-size:14px}
+.fb{border-radius:18px;padding:10px 16px;margin-bottom:12px;font-weight:700}
+.fb.warn{background:var(--or-bg);color:var(--or-tx);border:3px solid var(--orange)}
+.fb.good{background:var(--gr-bg);color:var(--gr-tx);border:3px solid var(--green)}
+.fb h3{font-size:21px;margin-bottom:4px}.fb ul{margin:6px 0 0;padding-inline-start:20px}.fb p{margin:4px 0 0}
+.okmark{width:80px;height:80px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:44px;margin:4px auto 10px;animation:okp .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes okp{from{transform:scale(0)}}
+.ptsgain{display:inline-block;background:var(--sun);color:#12324A;border-radius:99px;padding:0 16px;font-weight:800;font-size:18px}
+.mfoot{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start;margin-top:14px}
+.center{text-align:center}
+.rt label{display:grid;gap:4px;font-weight:800;font-size:15px;margin-top:8px;color:#D8F1F2}
+.rt input,.rt select{min-height:46px;border-radius:12px;border:2px solid #3B6480;background:#16354C;color:#fff;padding:0 12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:16px;width:100%;direction:ltr;text-align:left}
+.rt .tgl{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-weight:800;font-size:15px}
+.sw{min-width:84px;min-height:44px;border-radius:99px;border:3px solid var(--red);background:#3A1A22;color:#FFB3BA;font-weight:800}
+.sw:not(.on){border-color:var(--green);background:#123B27;color:#9DEBBE}
+.meter{margin-top:6px;font-size:13.5px;font-weight:700;color:#BFE3E8}
+.meter .mb{height:8px;border-radius:9px;background:#2A4A61;overflow:hidden;margin-bottom:3px}.meter .mb i{display:block;height:100%}
+.rt .btn.sm{margin-top:8px}
+.rt .go{width:100%;margin-top:14px;min-height:58px;font-size:20px;letter-spacing:.04em;direction:ltr}
+
+/* attack */
+.sheet.atk{background:linear-gradient(180deg,#14224F,#0F3350);color:#EAF6FF;--card:#14224F;--line:#35528A;--bg2:#1E3A66;--ink:#EAF6FF;--muted:#B8D2F0}
+.sheet.atk .opt{background:#1B2F63;color:#EAF6FF;border-color:#3C5C9C;box-shadow:0 4px 0 #3C5C9C}
+.sheet.atk .opt.wrong{background:#4A2030;border-color:#FF7B86;color:#FFD3D8}
+.sheet.atk .phoneMsg{background:#1E3A66;border-color:#3C5C9C}
+.atk-h{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.pulse{width:64px;height:64px;border-radius:50%;background:#FFC53D;color:#12324A;display:grid;place-items:center;font-size:32px;position:relative;flex:none}
+.pulse::after{content:"";position:absolute;inset:0;border-radius:50%;border:4px solid #FFC53D;animation:ring 1.6s ease-out infinite}
+.atk-h h2{font-size:30px}.atk-h p{margin:0;font-weight:700;color:#B8D2F0;font-size:15px}
+.tbar{height:14px;background:#1E3A66;border-radius:9px;overflow:hidden;margin:8px 0 4px}.tbar i{display:block;height:100%;width:100%;background:#FFC53D;transition:width .1s linear;margin-inline-start:auto}
+.stamp{font-size:clamp(30px,8vw,48px);font-weight:800;text-align:center;color:#8FEDB5;border:6px solid #8FEDB5;border-radius:20px;padding:0 16px;transform:rotate(-4deg);margin:14px auto;width:max-content;max-width:100%;animation:stampin .5s cubic-bezier(.3,1.6,.5,1);direction:ltr;line-height:1.5}
+@keyframes stampin{from{transform:scale(2.4) rotate(-14deg);opacity:0}}
+
+/* report / board / certificate */
+.rep{background:var(--card);border:4px solid var(--ink);border-radius:26px;padding:22px;max-width:900px;margin:0 auto}
+.rep-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center;border-bottom:3px dashed var(--line);padding-bottom:14px;margin-bottom:16px}
+.rep-h h2{font-size:30px}
+.rank-t{background:var(--sun);color:#12324A;border-radius:99px;padding:2px 18px;font-weight:800;font-size:19px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.kpi{background:var(--bg2);border-radius:16px;padding:8px 14px}.kpi b{font-size:28px;display:block;line-height:1.3}.kpi span{font-weight:700;color:var(--muted);font-size:14px}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px;padding:0;margin:8px 0 16px;list-style:none}
+.topics li{font-weight:800;display:flex;gap:8px;align-items:center}
+.topics .y{color:var(--green)}.topics .n{color:var(--muted);font-weight:700}
+.msgbox{background:var(--bg2);border-inline-start:8px solid var(--accent);border-radius:14px;padding:10px 16px;font-weight:700;margin-bottom:16px}
+.certbox{margin-top:16px;text-align:center}
+.certbox canvas{max-width:100%;height:auto;border-radius:14px;border:4px solid var(--line);background:#fff}
+.ftabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 auto 12px;max-width:820px}
+table.lb{width:100%;border-collapse:separate;border-spacing:0 8px;max-width:820px;margin:0 auto}
+.lb th{text-align:start;font-size:14px;color:var(--muted);padding:0 12px}
+.lb td{background:var(--card);padding:8px 12px;font-weight:800;border-top:3px solid var(--line);border-bottom:3px solid var(--line)}
+.lb td:first-child{border-inline-start:3px solid var(--line);border-radius:0 16px 16px 0;font-size:22px}
+.lb td:last-child{border-inline-end:3px solid var(--line);border-radius:16px 0 0 16px}
+.lb tr.me td{background:var(--sun);color:#12324A;border-color:#12324A}
+.mini{display:inline-block;width:70px;height:10px;border-radius:9px;background:var(--bg2);vertical-align:middle;overflow:hidden;margin-inline-end:8px}.mini i{display:block;height:100%;background:var(--green)}
+.rbars{display:grid;gap:10px;margin:12px 0}
+.rbars div{display:grid;grid-template-columns:140px 1fr auto;gap:10px;align-items:center;font-weight:800;font-size:15px}
+.notes{font-size:15px;color:var(--muted)}
+
+/* plan / designer */
+.plan-lay{display:grid;grid-template-columns:250px 1fr;gap:14px;align-items:start}
+.plan-lay.view{grid-template-columns:1fr}
+.pal{background:var(--card);border:3px solid var(--line);border-radius:20px;padding:10px;max-height:620px;overflow:auto}
+.pal h4{font-size:14.5px;margin:8px 4px 4px;color:var(--muted)}
+.pal .items{display:flex;flex-wrap:wrap;gap:6px}
+.pi{border:2px solid var(--line);background:var(--bg2);border-radius:12px;padding:2px 10px;font-weight:700;font-size:14px;display:flex;gap:6px;align-items:center;min-height:40px;touch-action:pan-y;user-select:none}
+.pi:hover{border-color:var(--accent)}
+.plan-out{position:relative;width:100%;aspect-ratio:900/560;border:4px solid var(--ink);border-radius:20px;overflow:hidden;background:var(--wall);direction:ltr}
+.plan-in{position:absolute;left:0;top:0;width:900px;height:560px;transform-origin:0 0;
+  background-image:linear-gradient(var(--line) 2px,transparent 2px),linear-gradient(90deg,var(--line) 2px,transparent 2px);background-size:0 0}
+.plan-in.grid{background-size:30px 30px;background-position:-1px -1px}
+.pd{position:absolute;display:grid;place-items:center;border-radius:16px;background:var(--card);border:4px solid var(--ring);touch-action:none;user-select:none;cursor:pointer;color:var(--ink);font-size:26px;line-height:1}
+.pd svg{width:60%;height:60%}
+.pd.edit{cursor:grab}.pd.sel{outline:4px dashed var(--sun);outline-offset:3px}
+.pd .dot{position:absolute;top:-10px;right:-10px;width:24px;height:24px;border-radius:50%;background:var(--ring);color:#fff;font-size:14px;font-weight:800;display:grid;place-items:center;border:2px solid #fff}
+.pd.st-danger{--ring:var(--red)}.pd.st-warning{--ring:var(--orange)}.pd.st-safe{--ring:var(--green)}
+.pd .lb2{position:absolute;top:100%;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12px;font-weight:800;background:var(--ink);color:var(--card);border-radius:8px;padding:0 6px;margin-top:2px;font-family:var(--f);direction:rtl}
+.rl-lbl{position:absolute;background:var(--sun);color:#12324A;border-radius:10px;padding:0 12px;font-weight:800;font-size:15px;cursor:default;touch-action:none;user-select:none;white-space:nowrap;font-family:var(--f);direction:rtl;border:3px solid #12324A}
+.rl-lbl.edit{cursor:grab}.rl-lbl.sel{outline:4px dashed var(--accent);outline-offset:3px}
+.ptool{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+.insp{background:var(--card);border:3px solid var(--line);border-radius:18px;padding:10px 14px;margin-top:10px;display:grid;gap:8px}
+.insp .r{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-weight:800}
+.insp input[type=text]{min-height:42px;border:2px solid var(--line);border-radius:10px;padding:0 10px;background:var(--bg2);flex:1;min-width:140px}
+.sopt{border:3px solid var(--line);border-radius:12px;background:var(--card);min-height:42px;padding:0 12px;font-weight:800}
+.sopt.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.toast{position:fixed;bottom:calc(90px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--card);padding:6px 20px;border-radius:99px;font-weight:800;z-index:90;max-width:90vw}
+.ghostpi{position:fixed;z-index:99;pointer-events:none;background:var(--card);border:3px solid var(--accent);border-radius:12px;padding:2px 12px;font-weight:800;transform:translate(-50%,-50%)}
+textarea.json{width:100%;min-height:220px;border:2px solid var(--line);border-radius:12px;background:var(--bg2);padding:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;direction:ltr}
+
+@media (max-width:820px){
+  body{font-size:16.5px}
+  .welcome{grid-template-columns:1fr;min-height:0;gap:20px}
+  .pcards{grid-template-columns:1fr}
+  .top-in{grid-template-columns:1fr;gap:4px;padding:6px 14px}
+  .brand{display:flex;justify-content:space-between;font-size:16px}
+  .stats{justify-content:space-between}.stat{flex:1;min-width:0;padding:0 6px}.stat b{font-size:17px}.stat span{font-size:11.5px}
+  .lvl-h b{font-size:22px}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:3px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));justify-content:space-around;gap:0;flex-wrap:nowrap;max-width:none}
+  .tab{flex-direction:column;gap:0;font-size:11px;padding:2px;min-height:52px;flex:1;text-align:center;line-height:1.25;justify-content:center}
+  .tab .ti{font-size:20px}
+  main{padding:10px 12px 110px}
+  .hbody{grid-template-columns:1fr}
+  .room,.room.r-entrance,.room.r-living{grid-column:auto;display:none}
+  .room.cur{display:block;box-shadow:none}
+  .roof{height:112px}
+  .devs{gap:8px}.dev{flex:1 1 96px}
+  .sheet{padding:14px;border-radius:22px}
+  .overlay{align-items:end;padding:8px}
+  .rbars div{grid-template-columns:100px 1fr auto}
+  .plan-lay{grid-template-columns:1fr}
+  .pal{max-height:none}
+  .swaptxt{display:none}
+}
+@media (min-width:821px){.brand .swap{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media print{.top,.tabs,.mfoot,.noprint{display:none!important}.page{display:none!important}#p-report{display:block!important}body{background:#fff}}
+
+@media (max-width:820px){.stats .swap{display:none}}
+</style>
+</head>
+<body>
+<div id="live" class="sr" aria-live="polite"></div>
+
+<!-- WELCOME -->
+<div id="v-welcome" class="screen-wrap">
+  <div class="welcome">
+    <div>
+      <div class="logo"><span aria-hidden="true">🛡️</span> Cyber Safe Home</div>
+      <h1>ادخل البيت.<span>اكتشف الخطر. وأصلحه.</span></h1>
+      <p class="lead">استكشف منزلًا ذكيًا مليئًا بالأجهزة المتصلة بالإنترنت. بعض الأجهزة فيها خطر وبعضها سليم، وعليك أن تكتشف الفرق وتتعلم كيف تحميها بنفسك.</p>
+      <ul class="flow" aria-label="طريقة اللعب">
+        <li>🔎 شاهد المشكلة</li><li>💡 افهم الخطر</li><li>🛠️ اتخذ الإجراء</li><li>✅ أمّن الجهاز</li>
+      </ul>
+      <button class="btn" data-act="start" style="font-size:22px;min-height:62px;padding:8px 40px">ابدأ اللعب</button>
+    </div>
+    <div class="hero-house" aria-hidden="true">
+      <div class="hero-shield">🛡️</div><div class="hero-roof"></div>
+      <div class="hero-body"><div><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="14" width="20" height="7" rx="2"/><circle cx="6" cy="17.5" r="1" fill="currentColor"/><circle cx="10" cy="17.5" r="1" fill="currentColor"/><line x1="6" y1="14" x2="4" y2="4"/><line x1="18" y1="14" x2="20" y2="4"/><path d="M8 8a5 5 0 0 1 8 0"/></svg></span></div><div><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg></span></div><div><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span></div><div><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg></span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH / CHOOSE PLAYER -->
+<div id="v-auth" class="screen-wrap" hidden>
+  <h2 class="sec">اختر لاعبك</h2>
+  <p class="lead" style="margin-bottom:0">للأطفال وأولياء الأمور حصص توعية مختلفة، لذلك لكل لاعب تحديات مختلفة. سجّل بلقب فقط، ولا نطلب أي اسم حقيقي.</p>
+  <div class="atabs" role="group" aria-label="نوع الدخول">
+    <button class="atab" data-act="atab" data-m="reg" aria-pressed="true">لاعب جديد</button>
+    <button class="atab" data-act="atab" data-m="login" aria-pressed="false">لدي حساب</button>
+  </div>
+  <div id="authMsg" role="alert"></div>
+  <div id="regBox">
+    <div class="pcards" role="radiogroup" aria-label="اختر لاعبك">
+      <button class="pcard kid" role="radio" aria-checked="false" data-act="pick" data-role="kid">
+        <div class="big" aria-hidden="true">🧒</div><h3>الطفل السيبراني</h3><p class="age">من 8 إلى 13 سنة</p>
+        <ul><li>كلمات مرور قوية وخاصة</li><li>التصيد ورمز OTP والروابط المشبوهة</li><li>الألعاب ووسائل التواصل بأمان</li><li>التنمر والابتزاز: ماذا أفعل؟</li></ul>
+        <div class="cls">📚 حصة توعية الطفل ← طبّق هنا ما تعلمته</div>
+      </button>
+      <button class="pcard parent" role="radio" aria-checked="false" data-act="pick" data-role="parent">
+        <div class="big" aria-hidden="true">🧑</div><h3>ولي الأمر</h3><p class="age">احمِ المنزل كله</p>
+        <ul><li>الراوتر: WPA3 وإيقاف WPS وكلمة مرور الإدارة</li><li>الكاميرا والجرس والقفل الذكي</li><li>الرقابة الأبوية وMFA والأجهزة غير المعروفة</li><li>النسخ الاحتياطي والتحديثات</li></ul>
+        <div class="cls">📚 حصة توعية أولياء الأمور ← طبّق هنا ما تعلمته</div>
+      </button>
+    </div>
+  </div>
+  <div class="nickrow">
+    <label>اللقب (بدون اسم حقيقي)<input id="nick" maxlength="16" placeholder="مثال: صقر_آمن" autocomplete="off"></label>
+    <button class="btn" id="enterBtn" data-act="enter">ادخل المنزل</button>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="v-admin" class="screen-wrap" hidden>
+  <h2 class="sec">لوحة المشرف</h2><p class="lead">كل اللاعبين المسجلين على الخادم.</p>
+  <div class="mfoot" style="margin:0 0 14px"><button class="btn" data-act="admrefresh">🔄 تحديث</button><button class="btn ghost" data-act="admcsv">⬇️ تصدير CSV</button><button class="btn ghost" data-act="admback">رجوع</button></div>
+  <div id="admTable" style="overflow:auto"></div>
+</div>
+
+<!-- GAME -->
+<div id="game" hidden>
+  <header class="top"><div class="top-in">
+    <div class="brand"><span><span aria-hidden="true">🛡️</span> Cyber Safe Home <span class="who" id="who"></span><span class="who" id="sync">☁️ …</span></span><button class="swap" data-act="logout">🔄 تبديل</button></div>
+    <button class="lvl" data-act="lvl" aria-label="تفاصيل مستوى الأمان">
+      <span class="lvl-h"><span>مستوى الأمان</span><b id="lvlNum">0%</b><em id="lvlWord">ضعيف</em></span>
+      <span class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="lvlBar"><i id="lvlFill"></i></span>
+    </button>
+    <div class="stats">
+      <div class="stat" id="stScore"><b>0</b><span>النقاط</span></div>
+      <div class="stat"><b id="stDev">0/12</b><span>أجهزة مؤمّنة</span></div>
+      <div class="stat"><b id="stCh">0/0</b><span>تحديات</span></div>
+      <button class="swap" data-act="logout">🔄 تبديل اللاعب</button>
+    </div>
+  </div></header>
+  <nav class="tabs" aria-label="القائمة الرئيسية">
+    <button class="tab" data-act="nav" data-p="home"><span class="ti" aria-hidden="true">🏠</span> الرئيسية</button>
+    <button class="tab" data-act="nav" data-p="devices"><span class="ti" aria-hidden="true">📱</span> أجهزتي</button>
+    <button class="tab" data-act="nav" data-p="challenges"><span class="ti" aria-hidden="true">🎯</span> التحديات</button>
+    <button class="tab" data-act="nav" data-p="plan"><span class="ti" aria-hidden="true">🗺️</span> <span id="planTab">الخريطة</span></button>
+    <button class="tab" data-act="nav" data-p="report"><span class="ti" aria-hidden="true">📋</span> التقرير</button>
+    <button class="tab" data-act="nav" data-p="board"><span class="ti" aria-hidden="true">🏆</span> الصدارة</button>
+  </nav>
+  <main>
+    <section id="p-home" class="page"></section>
+    <section id="p-devices" class="page"></section>
+    <section id="p-challenges" class="page"></section>
+    <section id="p-plan" class="page"></section>
+    <section id="p-report" class="page"></section>
+    <section id="p-board" class="page"></section>
+  </main>
+</div>
+
+<div id="ov" class="overlay" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="mt" tabindex="-1"></div></div>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+const T={"child": [{"id": "device_phone", "name": "الهاتف الذكي 📱", "room": "غرفة الطفل", "icon": "📱", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"5\" y=\"2\" width=\"14\" height=\"20\" rx=\"3\"/><line x1=\"12\" y1=\"18\" x2=\"12\" y2=\"18.01\"/></svg>", "title": "تحدي حماية الهاتف والرسائل الاحتيالية", "q": [{"t": "المرحلة 1: كشف روابط التصيد الماكرة (Phishing)", "s": "وصلتك رسالة على تطبيق المراسلة من حساب يحمل اسم وصورة صديقك في المدرسة يقول: 'عاجل جداً! تم تسريب حساب لعبتك المفضلة وسيحذف بعد ساعة! ادخل فوراً على هذا الرابط لتأكيد هويتك واسترجاع 10,000 جوهرة مجانية: http://goog1e-game-security.net/verify'.", "q": "عند تدقيق الرابط والموقف، ما هو التصرف الذكي والأكثر أماناً؟", "o": [["الرابط مزيف (goog1e برقم 1 بدلاً من حرف l)، يجب عدم النقر عليه، وإبلاغ صديقي عبر اتصال هاتفي لأن حسابه ربما سُرق 🛑", 1, "عبقري سيبراني! 🌟 لاحظت الخدعة في اسم النطاق (Typosquatting). المخترقون ينتحلون شخصيات الأصدقاء لسرقة بياناتك.", 15], ["الضغط على الرابط بسرعة وإدخال كلمة سر حسابي للحفاظ على الجواهر", 0, "خطر فادح! ❌ الرابط ينقلك لصفحة تصيد احتيالي صممها المخترق لسرقة كلمة سرك بمجرد كتابتها.", 0], ["إعادة توجيه الرسالة لكل زملائي في الفصل لتحذيرهم قبل أن أتأكد", 0, "غير صحيح! ⚠️ إعادة توجيه الرابط تساعد المخترق على نشره بين أصدقائك ووقوع ضحايا جدد.", 0]]}, {"t": "المرحلة 2: التطبيقات المجهولة وأذونات التجسس", "s": "بعد تفادي الرسالة الاحتيالية، لاحظت أن هاتفك أصبح بطيئاً جداً، وتظهر إعلانات عشوائية فجأة على الشاشة، وتبين وجود تطبيق باسم 'ألعاب وخلفيات سحرية' تم تحميله من موقع خارجي بصيغة APK ويطلب صلاحية قراءة رسائل SMS والوصول للكاميرا في الخلفية!", "q": "كيف تحصن هاتفك وتتخلص من هذا التهديد نهائياً؟", "o": [["إلغاء جميع أذونات التطبيق فوراً، ثم حذفه نهائياً، وتشغيل فحص الحماية من المتجر الرسمي (Play Protect) 🛡️", 1, "قرار احترافي ممتاز! 🏆 تحميل ملفات APK من خارج المتاجر الرسمية قد يحمل تروجان يسحب رموز OTP للتجسس على حساباتك.", 15], ["إبقاء التطبيق لأن الخلفيات جميلة والاكتفاء بإغلاق صوت الإعلانات", 0, "تهاون خطير! ⚠️ التطبيق يستمر في قراءة رسائلك النصية والتنصت على خصوصيتك في الخلفية.", 0], ["إطفاء الهاتف وإعادة تشغيله مع ترك التطبيق كما هو", 0, "غير فعال! ❌ البرمجيات الخبيثة تبدأ تلقائياً مع تشغيل الهاتف ولا تحذف بإعادة التشغيل.", 0]]}]}, {"id": "device_console", "name": "منصة الألعاب 🎮", "room": "غرفة الطفل", "icon": "🎮", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"6\" width=\"20\" height=\"12\" rx=\"4\"/><line x1=\"6\" y1=\"12\" x2=\"10\" y2=\"12\"/><line x1=\"8\" y1=\"10\" x2=\"8\" y2=\"14\"/><circle cx=\"15\" cy=\"11\" r=\"1.5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"13.5\" r=\"1.5\" fill=\"currentColor\"/></svg>", "title": "تأمين حسابات الألعاب والتصدي للهندسة الاجتماعية", "q": [{"t": "المرحلة 1: كشف فخاخ 'شحن النقاط المجانية'", "s": "أثناء لعبك أونلاين، تواصل معك لاعب وطلب منك الانضمام لفريقه الخاص ووعدك بمنحك مظاهر (Skins) نادرة، وطلب منك مشاركة شاشتك أو إرسال الرمز الذي وصل إلى بريدك الإلكتروني بحجة 'إرسال الهدية إلى حسابك'.", "q": "ما هي حقيقة هذا الطلب وكيف تتصرف بحزم؟", "o": [["الرمز المرسل لإيميلي هو كود استرداد كلمة المرور (Reset Code)! أرفض فوراً وأقوم بحظر اللاعب والإبلاغ عن سلوكه 🔒", 1, "بطل سيبراني نبيه! 🌟 هذا أسلوب هندسة اجتماعية خبيث، حيث يطلب المخترق استعادة كلمة سرك ويحاول خداعك لتعطيه الرمز.", 15], ["إرسال الرمز طالما وعدني بعدم تغيير كلمة السر ومشاركتي المظاهر", 0, "سرقة فورية! 🚨 بمجرد إرسال الكود، سيغير المخترق إيميلك وكلمة سرك ويفقدك حسابك للأبد.", 0], ["إعطاؤه الرمز ثم تغيير كلمة السر بعد استلام الهدايا", 0, "خطأ كبير! ❌ المخترق سيقوم بتغيير بيانات الدخول في ثانية واحدة قبل أن تتمكن من فعل أي شيء.", 0]]}, {"t": "المرحلة 2: درع الحماية المتعدد لحساب المنصة", "s": "حسابك في المنصة يحتوي على إنجازاتك وسنوات من التقدم، وتريد تحصينه بأقوى المعايير السيبرانية لمنع أي محاولة اختراق مستقبلية.", "q": "ما هي الاستراتيجية الدفاعية المتكاملة لحماية حسابك؟", "o": [["تفعيل المصادقة الثنائية (2FA) عبر تطبيق مصادقة، واستخدام كلمة سر معقدة فريدة، وقفل الدردشة مع الغرباء 🛡️", 1, "حماية حديدية! 🏆 حتى لو خمن أحد كلمة سرك، فلن يتمكن من الدخول دون رمز المصادقة الثنائية الحي.", 15], ["استخدام نفس كلمة سر بريدي الإلكتروني لسهولة حفظها وعدم نسيانها", 0, "خطأ فادح! ⚠️ تكرار كلمة السر يعني أنه إذا تم تسريب موقع واحد ستسقط جميع حساباتك الأخرى كأحجار الدومينو.", 0], ["الاعتماد على كلمة سر من أرقام فقط مع إبقاء الحساب مفتوحاً للجميع", 0, "أمان ضعيف جداً! ❌ كلمات السر الرقمية تكسر في أجزاء من الثانية ببرامج التخمين الآلية.", 0]]}]}, {"id": "device_router", "name": "راوتر Wi-Fi 🌐", "room": "غرفة المعيشة", "icon": "🌐", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"14\" width=\"20\" height=\"7\" rx=\"2\"/><circle cx=\"6\" cy=\"17.5\" r=\"1\" fill=\"currentColor\"/><circle cx=\"10\" cy=\"17.5\" r=\"1\" fill=\"currentColor\"/><line x1=\"6\" y1=\"14\" x2=\"4\" y2=\"4\"/><line x1=\"18\" y1=\"14\" x2=\"20\" y2=\"4\"/><path d=\"M8 8a5 5 0 0 1 8 0\"/></svg>", "title": "أمان البوابة الرئيسية للإنترنت في المنزل", "q": [{"t": "المرحلة 1: هجوم الشبكة المقلدة (Evil Twin)", "s": "انقطع اتصال الواي فاي في منزلك فجأة، وظهرت شبكة جديدة تحمل نفس اسم شبكتكم بالضبط مع إضافة كلمة 'Free_Fast' وبدون كلمة سر، وطلب منك المتصفح عند محاولة فتح أي موقع إدخال كلمة سر شبكة المنزل لتحديث الاتصال!", "q": "ما الذي يحدث هنا وما هو الإجراء الأمني الصائب؟", "o": [["هذا هجوم 'التوأم الشرير' لاعتراض وتجسس على البيانات! لا اتصل بها مطلقاً وأبلغ ولي الأمر بإعادة تشغيل الراوتر الأصلي 🌐", 1, "تحليل ذكي جداً! 🌟 المهاجم ينشئ نقطة وصول مطابقة ليجبر أجهزتك على الاتصال به ويسرق بياناتك المصرفية والشخصية.", 15], ["الاتصال بالشبكة لأنها مفتوحة وسريعة وكتابة كلمة المرور المطلوبة", 0, "كارثة أمنية! 🚨 كتابة كلمة السر في الصفحة المزيفة سيسلم مفتاح شبكة منزلك للمهاجم فوراً.", 0], ["تجاهل الأمر والاستمرار في تصفح مواقع حساسة عبر تلك الشبكة", 0, "خطر تجسس! ⚠️ يمكن للمخترق مراقبة كل المواقع والرسائل التي ترسلها عبر الشبكة غير المشفرة.", 0]]}, {"t": "المرحلة 2: التحصين المتقدم للراوتر المنزلي", "s": "يريد أفراد الأسرة ضبط إعدادات الراوتر بحيث يستحيل على أي جار أو متطفل خارجي اختراق الشبكة أو الدخول للوحة تحكم الراوتر.", "q": "ما هي التوليفة الصحيحة لإعدادات راوتر المنزل الآمن؟", "o": [["تغيير بيانات دخول الأدمن الافتراضية، وتفعيل تشفير WPA3، وتعطيل WPS، وإنشاء شبكة ضيوف معزولة للأجهزة الذكية 🔐", 1, "حماية متكاملة بمعايير عالمية! 🏆 تعطيل WPS يغلق ثغرة التخمين السريع، وتشفير WPA3 يمنع هجمات المعاجم.", 15], ["إخفاء اسم الشبكة فقط والإبقاء على كلمة السر الافتراضية admin/admin", 0, "أمان وهمي! ❌ برامج فحص الشبكات تكشف الشبكات المخفية بسهولة تامة، وكلمة admin/admin معروفة للجميع.", 0], ["ترك ميزة WPS مفعلة لسهولة اتصال الضيوف بضغطة زر واحدة", 0, "ثغرة شائعة! ⚠️ ميزة WPS تعتمد على رمز PIN مكون من 8 أرقام يمكن اختراقه في بضع ساعات.", 0]]}]}, {"id": "device_tv", "name": "التلفزيون الذكي Smart TV 📺", "room": "غرفة المعيشة", "icon": "📺", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"3\" width=\"20\" height=\"14\" rx=\"2\"/><line x1=\"8\" y1=\"21\" x2=\"16\" y2=\"21\"/><line x1=\"12\" y1=\"17\" x2=\"12\" y2=\"21\"/></svg>", "title": "حماية الشاشات الذكية من برمجيات الترهيب والتنصت", "q": [{"t": "المرحلة 1: مواجهة إشعارات الترهيب المزيفة (Scareware)", "s": "أثناء مشاهدتك لمقطع فيديو تعليمي على متصفح الشاشة الذكية، ظهرت فجأة نافذة حمراء مرعبة تصدر صوتاً تحذيرياً مكتوب فيها: 'تم قفل تلفزيونك بسبب 13 فيروساً خطيراً! اضغط هنا لتثبيت برنامج مكافحة الفيروسات ودفع غرامة 50 دولاراً فوراً!'.", "q": "كيف تتعامل مع هذه النافذة بوعي سيبراني وهدوء؟", "o": [["هذه خدعة ترهيب (Scareware) تحاول خداعي لتثبيت برنامج تجسس أو دفع أموال! أقوم بإغلاق التبويب والمتصفح فوراً دون لمس أي زر بالنافذة 📺", 1, "رائع جداً! 🌟 الشاشات لا تصاب بفيروسات بهذه الطريقة، والهدف كان إخافتك لتنزيل برمجية ضارة على نظام الشاشة.", 15], ["الضغط على زر التحميل فوراً لحذف الفيروسات المزعومة", 0, "وقوع في الفخ! 🚨 بالضغط على التحميل، قمت بتثبيت البرمجية الخبيثة الحقيقية في نظام الشاشة.", 0], ["إدخال بيانات بطاقة والدي لدفع المبلغ والتخلص من التنبيه", 0, "احتيال مالي! ❌ سرقة لبيانات البطاقة البنكية دون أي فائدة.", 0]]}, {"t": "المرحلة 2: خصوصية الكاميرا والميكروفون في الشاشة", "s": "التلفزيون الذكي يحتوي على كاميرا لمكالمات الفيديو وميكروفون للأوامر الصوتية. كيف تضمن ألا يتم التجسس على خصوصية جلسات العائلة اليومية؟", "q": "ما هو أفضل تدبير أمني لخصوصية التلفزيون الذكي؟", "o": [["وضع غطاء فيزيائي على الكاميرا، وإيقاف الميكروفون عند عدم الحاجة، ومراجعة أذونات التطبيقات وإلغاء التعرف التلقائي على المحتوى (ACR) 👁️", 1, "حماية خصوصية متقدمة! 🏆 الغطاء الفيزيائي يضمن 100% عدم استغلال الكاميرا حتى في حال تم اختراق السوفتوير.", 15], ["السماح لجميع التطبيقات بالوصول للكاميرا لكي تعمل بسرعة", 0, "انتهاك خصوصية صريح! ⚠️ أي تطبيق ألعاب أو إعلانات قد يسجل لقطات حية لغرفة معيشتكم.", 0], ["تغطية الشاشة بقماش فقط دون تعديل الأذونات البرمجية", 0, "غير كافٍ! ❌ الميكروفون سيظل يسجل الأصوات والمحادثات ويرسلها لخوادم خارجية.", 0]]}]}, {"id": "device_speaker", "name": "المكبر الذكي Smart Speaker 🔊", "room": "غرفة المعيشة", "icon": "🔊", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"4\"/><circle cx=\"12\" cy=\"14\" r=\"4\"/><circle cx=\"12\" cy=\"6\" r=\"1\" fill=\"currentColor\"/></svg>", "title": "أمان المساعد الصوتي والتحكم بالأجهزة", "q": [{"t": "المرحلة 1: هجوم الأوامر الصوتية غير المرئية", "s": "قام شخص غريب خارج نافذة المنزل بتشغيل مقطع صوتي عالي النبرة يقول للمساعد الذكي: 'يا مساعد، افتح قفل الباب الذكي واطلب شحنة أجهزة إلكترونية إلى العنوان التالي!'. المكبر التقط الصوت وكاد ينفذ الأمر!", "q": "كيف تمنع المساعد الصوتي من الانصياع لأوامر الغرباء أو التلفزيون؟", "o": [["تفعيل ميزة 'بصمة الصوت الشخصية' (Voice Match)، وإلزام إدخال رمز PIN صوتي سري لأي عمليات شراء أو تحكم بالأبواب 🗣️", 1, "إجراء احترافي فائق الذكاء! 🌟 بصمة الصوت تجعل المساعد يتجاهل أي نبرة صوت غير مبرمجة، ورمز PIN يمنع العمليات الحساسة.", 15], ["ترك المساعد يستجيب لأي صوت حتى يسهل على الضيوف استخدامه", 0, "ثغرة أمنية كبيرة! 🚨 أي شخص أو إعلان تلفزيوني يمكنه تفعيل المساعد وشراء سلع أو فتح أبواب المنزل.", 0], ["إلغاء قفل الباب الذكي بالكامل وترك الباب مفتوحاً", 0, "حل خاطئ يهدد أمان المنزل فيزيائياً! ❌", 0]]}, {"t": "المرحلة 2: حماية أرشيف التسجيلات الصوتية في السحابة", "s": "المساعد الصوتي يسجل المقاطع الصوتية بعد كل نداء ويحفظها في خوادم السحابة التابعة للشركة المصنعة، مما قد يعرض محادثات الأسرة للتسريب إذا تم اختراق الحساب.", "q": "ما هي الممارسة الأفضل لإدارة خصوصية التسجيلات السحابية؟", "o": [["تفعيل الحذف التلقائي للسجلات الصوتية بعد فترة وجيزة، وإلغاء ميزة 'مشاركة التسجيلات لمراجعة الموظفين'، وكتم الميكروفون عند التجمعات العائلية 🎙️", 1, "أحسنت! 🛡️ مسح السجلات بانتظام يمنع بقاء أي أثر لمحادثاتكم في حال تعرض خوادم السحابة للتسريب.", 15], ["ترك كل التسجيلات محفوظة للأبد دون أي مراجعة للإعدادات", 0, "خطر تتبع! ⚠️ أرشيف المحادثات الكامل يكشف أسرار وجداول نوم ومواعيد تواجد العائلة في المنزل.", 0]]}]}, {"id": "device_computer", "name": "حاسوب المكتب Computer 💻", "room": "المكتب", "icon": "💻", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"12\" rx=\"2\"/><path d=\"M2 20h20\"/></svg>", "title": "التصدي لبرمجيات الفدية والملفات الخبيثة", "q": [{"t": "المرحلة 1: كشف الملفات ذات الامتداد المزدوج الخطير", "s": "وصلك بريد إلكتروني يحتوي على مرفق يزعم أنه 'مشروع المدرسة المعتمد للدرجات النهائية' باسم `Project_Grades.pdf.exe`. أيقونة الملف تبدو كملف PDF لكن نهايته .exe!", "q": "ماذا يمثل هذا الملف وكيف تتعامل معه بحذر؟", "o": [["هذا ملف تنفيذي خبيث (.exe) ينتحل صفة ملف PDF لتثبيت برمجية ضارة! لا أفتحه أبداً، وأفحصه بمضاد الفيروسات وأحذفه نهائياً 🗑️", 1, "فراسة أمنية ممتازة! 🌟 هجوم الامتداد المزدوج (Double Extension) خدعة شهيرة يتبعها الهاكرز لخداع نظام التشغيل والمستخدمين.", 15], ["النقر المزدوج على الملف فوراً للاطلاع على درجاتي في المشروع", 0, "إصابة فورية! 🚨 تشغيل ملف .exe يمنح البرمجية الخبيثة صلاحيات كاملة للتحكم في جهازك وسرقة كلمات السر.", 0], ["تغيير اسم الملف بمسح .exe ثم تشغيله", 0, "تصرف خطير! ❌ تغيير الاسم لا يغير طبيعة الملف البرمجية، وسيظل خطراً حقيقياً.", 0]]}, {"t": "المرحلة 2: درع الحماية ضد فيروسات الفدية (Ransomware)", "s": "برمجيات الفدية تقوم بتشفير كافة الصور والوثائق والمشاريع الدراسية ومطالبة صاحب الجهاز بآلاف الدولارات لاسترجاعها.", "q": "ما هو أفضل خط دفاع استراتيجي يضمن استعادة بياناتك دون دفع أي فدية؟", "o": [["الاحتفاظ بنسخ احتياطية دورية مشفرة على قرص خارجي مفصول تماماً عن الحاسوب والشبكة (Cold Backup)، وتحديث برامج الحماية 💾", 1, "قاعدة ذهبية في الأمن السيبراني! 🏆 القرص المفصول (Offline Backup) يعجز أي فيروس عن الوصول إليه، وبذلك تضمن سلامة ملفاتك 100%.", 15], ["الاعتماد على حفظ الملفات في مجلد 'المستندات' فقط داخل الحاسوب", 0, "خسارة كاملة! ⚠️ برمجيات الفدية تبحث أولاً عن مجلدات المستندات والصور لتشفيرها فوراً.", 0], ["دفع الفدية للمخترق في حال تشفير الملفات لضمان رجوعها", 0, "أسوأ تصرف! ❌ المنظمات الأمنية تؤكد أن دفع الفدية لا يضمن فك التشفير ويدعم العصابات الإجرامية.", 0]]}]}, {"id": "device_printer", "name": "الطابعة الذكية Printer 🖨️", "room": "المكتب", "icon": "🖨️", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M6 9V2h12v7\"/><path d=\"M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2\"/><rect x=\"6\" y=\"14\" width=\"12\" height=\"8\"/></svg>", "title": "سد ثغرات الطابعات المتصلة بالشبكة", "q": [{"t": "المرحلة 1: ظاهرة أوامر الطباعة الشبحية من الإنترنت", "s": "بدأت طابعة المكتب فجأة في منتصف اليوم بطباعة صفحات ورقية متتالية تحتوي على رسائل دعائية غريبة وشعارات مخترقين دون أن يرسل أي شخص من المنزل أمر طباعة!", "q": "ما سبب هذه المشكلة وكيف توقف هذا الاختراق فوراً؟", "o": [["منفذ الطباعة (Port 9100/IPP) مفتوح للإنترنت العام بدون كلمة مرور! يجب فصل كابل الشبكة فوراً والدخول لصفحة إعدادات الطابعة لتأمينها 🛑", 1, "تشخيص تقني بارع! 🌟 الطابعات غير المحمية يسهل رصدها عبر محركات فحص الإنترنت واستغلالها كأداة للإزعاج أو التسلل للشبكة.", 15], ["تزويد الطابعة بمزيد من الورق لقراءة الرسائل لمعرفة من يرسلها", 0, "هدر للموارد! ❌ هذا لا يحل الثغرة ويستنزف الحبر والورق ويترك باب الاختراق مفتوحاً.", 0], ["كسر الطابعة والاعتقاد بأنها مسكونة بالأشباح", 0, "تصرف غير عقلاني! ❌ المشكلة أمنية تقنية بحتة تتعلق بإعدادات الشبكة.", 0]]}, {"t": "المرحلة 2: تحصين الطابعة من التجسس على المستندات", "s": "الطابعات الذكية تحتفظ بذاكرة مؤقتة (Buffer Cache) لكل المستندات المطبوعة، بما في ذلك الشهادات، كشوف الحسابات، وصور الهويات العائلية.", "q": "كيف تمنع استخراج هذه المستندات الحساسة من ذاكرة الطابعة؟", "o": [["تعيين كلمة سر قوية لصفحة إدارة الطابعة، وتحديث الـ Firmware، وتفعيل مسح الذاكرة المؤقتة التلقائي، وإيقاف المنافذ غير المشفرة 🖨️", 1, "إجراء احترافي متكامل! 🏆 تحديث البرامج الثابتة يسد الثغرات، ومسح الذاكرة يمنع استعادة صور الوثائق الحساسة.", 15], ["ترك لوحة تحكم الطابعة بدون كلمة مرور لتسهيل الاستخدام", 0, "خطر جسيم! ⚠️ أي جهاز مصاب في الشبكة يمكنه الوصول لذاكرة الطابعة وسحب نسخ المستندات المطبوعة.", 0]]}]}, {"id": "device_camera", "name": "الكاميرا الذكية Smart Camera 📷", "room": "مدخل المنزل", "icon": "📷", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z\"/><circle cx=\"12\" cy=\"13\" r=\"4\"/></svg>", "title": "حماية كاميرات المراقبة من عيون المتلصصين", "q": [{"t": "المرحلة 1: كشف بيانات الدخول المصنعية الافتراضية", "s": "تم تركيب كاميرا ذكية عند مدخل المنزل، ولا تزال تعمل ببيانات المصنع: اسم المستخدم `admin` وكلمة المرور `12345`، ولاحظت أن مؤشر البث المباشر (LED) يضيء ليلاً دون أن يفتح أحد من العائلة التطبيق!", "q": "ما هو الخطر الفعلي المترتب على ذلك وما هو الحل العاجل؟", "o": [["بيانات admin/12345 مكشوفة في قوائم الهاكرز العالمية وتتيح لأي شخص مشاهدة المدخل! يجب تغيير كلمة المرور واسم المستخدم لرمز فائق التعقيد فوراً 🔐", 1, "إصابة في الصميم! 🌟 كلمات مرور المصنع الافتراضية هي السبب الأول وراء اختراق آلاف الكاميرات المنزلية حول العالم.", 15], ["إبقاء admin/12345 كما هي حتى لا أنسى كلمة المرور إذا احتجتها", 0, "انتهاك فادح لأمن منزلك! 🚨 الكاميرا أصبحت مفتوحة على مصراعيها ليشاهدها أي شخص على الإنترنت.", 0], ["إلصاق شريط لاصق فوق لمبة الـ LED حتى لا تزعجك في الظلام", 0, "تجاهل الكارثة! ❌ إخفاء اللمبة لا يوقف البث المخترق ولا يحمي خصوصيتكم.", 0]]}, {"t": "المرحلة 2: حماية البث السحابي وتشفير الاتصال", "s": "تطبيق الكاميرا يرسل مقاطع الفيديو إلى خوادم سحابية لكي تتمكن من مشاهدتها وأنت خارج المنزل.", "q": "كيف تتأكد أن مقاطع الفيديو مشفرة ولا يمكن لوسيط اعتراضها أو مشاهدتها؟", "o": [["تفعيل التشفير من النهاية إلى النهاية (E2EE)، وتفعيل التحقق بخطوتين (2FA) لحساب الكاميرا، وإغلاق منافذ P2P غير الآمنة 📹", 1, "درع خصوصية مطلق! 🏆 التشفير التام يضمن أنه حتى الشركة المزودة للخدمة لا تستطيع فك تشفير مقاطع الفيديو الخاصة بكم.", 15], ["استخدام شبكات واي فاي عامة بدون كلمة سر لمشاهدة بث الكاميرا", 0, "خطر اعتراض البيانات! ⚠️ شبكات الواي فاي العامة غير المشفرة تسمح بالتقاط حزم البث وسرقة الجلسة.", 0]]}]}, {"id": "device_doorbell", "name": "الجرس الذكي Smart Doorbell 🔔", "room": "مدخل المنزل", "icon": "🔔", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9\"/><path d=\"M13.73 21a2 2 0 0 1-3.46 0\"/></svg>", "title": "تأمين جرس الباب والتنبيهات الذكية", "q": [{"t": "المرحلة 1: هجوم قصف الإشعارات (MFA Fatigue)", "s": "وصلت إلى هاتفك فجأة عشرات الإشعارات المتتالية تطلب منك: 'هل أنت من يحاول الدخول لحساب جرس الباب الذكي؟ اضغط نعم للموافقة'. المخترق يرسل الإشعارات بكثافة لإزعاجك لكي تضغط 'نعم' بالخطأ!", "q": "كيف تواجه هذا الهجوم الماكر (MFA Prompt Bombing)؟", "o": [["الضغط على 'لا، لست أنا' فوراً، ثم تغيير كلمة مرور الحساب من جهاز آمن، وتفعيل التحقق عبر الأرقام بدلاً من الإشعار البسيط 🛡️", 1, "ذكاء دفاعي متقدم جداً! 🌟 هذا هجوم نفسي (MFA Fatigue)، والاستجابة برفض الطلب وتغيير كلمة السر يحبط مخطط المهاجم تماماً.", 15], ["الضغط على 'نعم' لإيقاف صوت الإشعارات المزعج ثم إغلاق الهاتف", 0, "كارثة أمنية! 🚨 بالضغط على نعم، منحت المخترق حق الدخول لحساب الجرس والتحكم بكافة الإعدادات.", 0], ["إلغاء خاصية التحقق بخطوتين من الحساب بالكامل لعدم استلام إشعارات", 0, "تجريد الحساب من حمايته! ❌ إلغاء 2FA يترك حسابك فريسة سهلة لأي مخترق يملك كلمة السر.", 0]]}, {"t": "المرحلة 2: منع التلاعب بالتسجيلات الصوتية وحساسات الحركة", "s": "الجرس الذكي يسجل كل شخص يقترب من عتبة المنزل بصوت وصورة عالية الدقة، ويريد الوالد التأكد من عدم إمكانية مسح هذه الأدلة.", "q": "ما هو الإعداد الأمثل لحماية سجلات مدخل المنزل؟", "o": [["تفعيل النسخ السحابي المشفر المقفل فورياً (Tamper-proof Logs)، وتفعيل تنبيه فوري في حال محاولة فك أو نزع الجرس فيزيائياً 🔔", 1, "حماية أمنية شاملة! 🏆 حتى لو حاول السارق نزع الجرس أو تدميره، فإن تسجيل وجهه يكون قد رُفع سحابياً بشكل لحظي.", 15], ["الاعتماد على حفظ الفيديوهات داخل بطاقة ذاكرة داخلية بالجرس فقط بدون تشفير", 0, "نقطة ضعف خطيرة! ⚠️ يمكن للمتسلل سرقة بطاقة الذاكرة ومسح كل الفيديوهات التي توثق هويته.", 0]]}]}, {"id": "device_lock", "name": "القفل الذكي Smart Lock 🔐", "room": "مدخل المنزل", "icon": "🔐", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/></svg>", "title": "الحماية السيبرانية والفيزيائية للقفل الذكي", "q": [{"t": "المرحلة 1: التصدي لهجوم إعادة الإرسال (Replay Attack)", "s": "القفل الذكي للباب الرئيسي يفتح لاسلكياً عبر إشارة بلوتوث يرسلها تطبيق الهاتف. شخص متطفل وقف بالقرب من الباب ومعه جهاز تنصت لاسلكي سجل إشارة الفتح، وحاول إعادة بثها في المساء لفتح الباب بعد نوم العائلة!", "q": "كيف يمنع القفل الذكي هذا الهجوم الخطير ويحمي المنزل؟", "o": [["تحديث برمجية القفل لتعتمد على 'رموز التشفير المتجددة المتغيرة في كل مرة' (Rolling Cryptographic Nonce)، مما يجعل الإشارة القديمة المسجلة عديمة الفائدة 🚪", 1, "أمان سيبراني على أعلى مستوى! 🌟 استخدام مفاتيح الأرقام العشوائية المتغيرة (Nonce) يمنع هجمات إعادة البث اللاسلكي بشكل قاطع.", 15], ["استخدام نفس الإشارة اللاسلكية الثابتة دائماً لسهولة الفتح", 0, "ثغرة قاتلة! 🚨 الإشارة الثابتة يمكن لأي جهاز استقبال رخيص تسجيلها وإعادة فتح باب منزلك في أي وقت.", 0], ["إلغاء قفل الباب بالمفتاح الكهربائي وتركه على المزلاج اليدوي فقط", 0, "حل بدائي يلغي فائدة الجهاز الذكي بدلاً من تأمينه تقنياً! ❌", 0]]}, {"t": "المرحلة 2: تأمين لوحة المفاتيح والرمز السري (PIN)", "s": "القفل يحتوي على لوحة أرقام للمس (Keypad). الأرقام الأكثر ضغطاً تترك أثراً دهنياً من بصمات الأصابع يكشف الأرقام المكونة للرمز، كما أن الرمز المعتمد حالياً هو 1234!", "q": "كيف تضمن ألا يتم تخمين أو استنتاج رمز الدخول المادي؟", "o": [["تغيير الرمز لرمز معقد وغير متوقع، وتفعيل ميزة 'الأرقام العشوائية الوهمية' (Scramble Code) بالضغط على أرقام عشوائية قبل وبعد الرمز الحقيقي، ومسح اللوحة دورياً 🔢", 1, "حماية عبقرية! 🏆 ميزة Scramble Code توهم أي متلصص أو كاميرا قريبة وتوزع البصمات على كافة الأزرار ليصعب تخمين الرمز.", 15], ["الإبقاء على 1234 وكتابة الرمز بقلم بجوار الباب حتى لا ينساه الصغار", 0, "كارثة أمنية مطلقة! ❌ أي شخص غريب يمر في الممر سيقرأ الرمز ويدخل المنزل بسهولة.", 0]]}]}], "parent": [{"id": "device_router", "name": "راوتر Wi-Fi 🌐", "room": "غرفة المعيشة", "icon": "🌐", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"14\" width=\"20\" height=\"7\" rx=\"2\"/><circle cx=\"6\" cy=\"17.5\" r=\"1\" fill=\"currentColor\"/><circle cx=\"10\" cy=\"17.5\" r=\"1\" fill=\"currentColor\"/><line x1=\"6\" y1=\"14\" x2=\"4\" y2=\"4\"/><line x1=\"18\" y1=\"14\" x2=\"20\" y2=\"4\"/><path d=\"M8 8a5 5 0 0 1 8 0\"/></svg>", "title": "تأمين البنية التحتية وعزل شبكات IoT", "q": [{"t": "المرحلة 1: التصدي لهجمات اختطاف DNS والتعديل عن بعد", "s": "لاحظت أن بعض أجهزة الأسرة عند فتح مواقع مصرفية أو محركات بحث يتم توجيهها لصفحات غريبة ومشبوهة. عند فحص لوحة الراوتر، اكتشفت أن إعدادات DNS تم تغييرها إلى خادم غير معروف، وخاصية الإدارة عن بعد (Remote Management Port 8080) مفعلة على الإنترنت العام بكلمة سر المصنع الافتراضية!", "q": "ما هي حزمة الإجراءات الطارئة لمعالجة هذا الاختراق فوراً؟", "o": [["إعادة تعيين إعدادات DNS لخوادم مشفرة موثوقة، وتعطيل الإدارة عن بعد WAN تماماً، وتغيير كلمة مرور المشرف لرمز معقد 🌐", 1, "تدخل سيبراني احترافي! 🛡️ هجوم DNS Hijacking خطير جداً لأنه يوجه المستخدمين لمواقع تصيد طبق الأصل لسرقة الحسابات.", 15], ["إعادة تشغيل الراوتر فقط دون تغيير كلمات المرور أو فحص الـ DNS", 0, "إجراء غير كافٍ! ❌ المهاجم يملك صلاحيات المشرف وسيعود للتحكم بالراوتر فور اتصاله بالإنترنت.", 0], ["تجاهل الأمر والاعتماد على مضاد الفيروسات في الهواتف فقط", 0, "خطأ استراتيجي! ⚠️ الراوتر هو البوابة الرئيسية، وإذا تلوث نظام أسماء النطاقات فإن كل أجهزة المنزل تصبح مخترقة.", 0]]}, {"t": "المرحلة 2: تطبيق العزل الشبكي (Network Segmentation & VLAN)", "s": "المنزل يحتوي على 10 أجهزة ذكية (كاميرات، قفل، طابعة، تلفزيون، ميكروفون). إذا تعرض أحد هذه الأجهزة للاختراق، فإنه قد يستغل للوصول لحواسيب العمل وهواتف الأسرة الشخصية.", "q": "ما هو المعيار الأمني الأمثل لتصميم الشبكة المنزلية المقاومة للاختراق؟", "o": [["إنشاء شبكة فرعية منفصلة (IoT VLAN / Guest Network) تعزل الأجهزة الذكية تماماً عن أجهزة العمل والبيانات الحساسة، مع تفعيل تشفير WPA3 وحظر UPnP 🔒", 1, "هندسة أمنية بمستوى الشركات! 🏆 العزل الشبكي يمنع هجمات التحرك الجانبي (Lateral Movement)، فلو سقط جهاز ذكي فلن يتأثر باقي المنزل.", 15], ["وضع جميع أجهزة المنزل وحواسيب العمل في شبكة واحدة مفتوحة لتسهيل مشاركة الملفات", 0, "مخاطرة فادحة! ⚠️ ثغرة بسيطة في طابعة أو لمبة ذكية ستمنح المخترق وصولاً فورياً لملفات العمل والوثائق المالية.", 0]]}]}, {"id": "device_phone", "name": "الهاتف الذكي 📱", "room": "غرفة الطفل", "icon": "📱", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"5\" y=\"2\" width=\"14\" height=\"20\" rx=\"3\"/><line x1=\"12\" y1=\"18\" x2=\"12\" y2=\"18.01\"/></svg>", "title": "الرقابة الأبوية الذكية ومنع الاحتيال المالي", "q": [{"t": "المرحلة 1: حماية البطاقات الائتمانية من مشتريات الألعاب المباغتة", "s": "فوجئت بخصم مالي متكرر من بطاقتك البنكية بسبب قيام طفلك بالضغط المتكرر على عروض داخل لعبة بعد أن ظهر له إعلان براق يزعم منحه قدرات خارقة، حيث كان متجر التطبيقات مضبوطاً على الشراء الفوري بنقرة واحدة بدون كلمة سر!", "q": "كيف تعالج هذه المشكلة وتمنع أي خصم غير مصرح به مستقبلاً؟", "o": [["تفعيل الرقابة الأبوية (Family Link / Screen Time)، وإلزام إدخال كلمة سر المشرف أو البصمة لكل عملية شراء، وحذف البطاقة من متجر أجهزة الأطفال 💳", 1, "إجراء تربوي وأمني صائب 100%! 🌟 وضع حواجز أمان مالي يحمي مدخراتك ويعلم الطفل ترشيد الاستهلاك الرقمي.", 15], ["معاقبة الطفل وحرمانه من كل الأجهزة دون تعديل الإعدادات في الحساب", 0, "رد فعل غير مجدٍ! ❌ الإعدادات تظل ثغرة قائمة ويمكن أن تتكرر المشكلة في أي وقت.", 0], ["إبقاء الشراء متاحاً دون قيود وتفقد كشف الحساب البنكي كل شهر فقط", 0, "إهمال مالي خطير! ⚠️ قد تستنزف مبالغ طائلة قبل أن تنتبه لكشف الحساب.", 0]]}, {"t": "المرحلة 2: حماية حسابات الأسرة من هجمات سرقة الشريحة (SIM Swapping)", "s": "تعتمد العديد من المنصات على رسائل SMS كطريقة وحيدة للمصادقة الثنائية، بينما يستطيع المهاجمون عبر الهندسة الاجتماعية نقل رقم الهاتف لشريحة جديدة وسرقة الحسابات.", "q": "ما هو البديل الأكثر أماناً لحماية حسابات الوالدين والأسرة الرقمية؟", "o": [["استبدال التحقق عبر SMS بتطبيقات المصادقة المشفرة (مثل Google Authenticator أو مفاتيح الأمان FIDO2/YubiKey) ووضع رمز PIN للاتصال بمزود الاتصالات 🔐", 1, "أعلى معايير الأمن السيبراني الحديث! 🏆 مفاتيح FIDO2 وتطبيقات الـ TOTP غير قابلة للاعتراض حتى لو تم استنساخ شريحة هاتفك.", 15], ["الاستمرار في الاعتماد الكلي على رسائل SMS فقط لجميع الحسابات البنكية", 0, "ثغرة معروفة! ⚠️ بروتوكول SS7 والـ SIM Swap يجعلان الاعتماد المنفرد على رسائل SMS خياراً غير آمن للحسابات الحساسة.", 0]]}]}, {"id": "device_camera", "name": "الكاميرا الذكية Smart Camera 📷", "room": "مدخل المنزل", "icon": "📷", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z\"/><circle cx=\"12\" cy=\"13\" r=\"4\"/></svg>", "title": "تأمين كاميرات المراقبة IP وسد منافذ RTSP", "q": [{"t": "المرحلة 1: كشف محركات بحث الأجهزة المتصلة (مثل Shodan)", "s": "أبلغك صديق متخصص في تقنية المعلومات أنه أثناء بحثه في محرك Shodan المتخصص في رصد أجهزة الإنترنت غير المحمية، وجد بث كاميرا مدخل منزلك معروضاً علناً عبر الإنترنت لأن منفذ البث المباشر (RTSP Port 554) مفتوح في الراوتر عبر خاصية UPnP بدون كلمة مرور!", "q": "ما هي الخطوة الفورية لإيقاف هذا التسريب لخصوصية منزلك؟", "o": [["تعطيل بروتوكول UPnP في الراوتر فوراً، وإغلاق منافذ Port Forwarding الخاصة بالكاميرا، وتعيين مصادقة مشفرة لكافة تدفقات الفيديو 🛑", 1, "استجابة أمنية نموذجية! 🛡️ خاصية UPnP تفتح المنافذ تلقائياً بدون إذن المستخدم، مما يجعل الكاميرات صيداً سهلاً لمحركات المسح العالمية.", 15], ["تغيير مكان الكاميرا فقط مع إبقاء المنافذ مفتوحة للإنترنت العام", 0, "علاج خاطئ! ❌ البث يظل متاحاً لأي متصفح على الإنترنت بغض النظر عن زاوية التصوير.", 0]]}, {"t": "المرحلة 2: الوصول الآمن للبث عن بعد عبر VPN منزلي مشفر", "s": "تريد مراقبة كاميرا المنزل أثناء السفر دون الاعتماد على خوادم P2P سحابية غير موثوقة في دول مجهولة.", "q": "ما هي البنية التحتية الآمنة لمشاهدة كاميرات المنزل عن بعد؟", "o": [["إنشاء خادم WireGuard/OpenVPN آمن ومحلي في الراوتر، والاتصال به مشفراً للوصول للكاميرات وكأنك داخل الشبكة المنزلية 🛡️", 1, "قمة الاحتراف التقني! 🏆 استخدام VPN محلي يلغي الحاجة لفتح أي منافذ للكاميرا على الإنترنت ويضمن خصوصية كاملة لاتصالك.", 15], ["تفعيل خيار 'المشاركة العامة للبث عبر رابط ويب' لسهولة الفتح من أي متصفح", 0, "كارثة انتهاك خصوصية! ⚠️ الروابط العامة يسهل تسريبها أو تخمينها.", 0]]}]}, {"id": "device_lock", "name": "القفل الذكي Smart Lock 🔐", "room": "مدخل المنزل", "icon": "🔐", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/></svg>", "title": "إدارة الهويات وصلاحيات الوصول الفيزيائي", "q": [{"t": "المرحلة 1: مخاطر المفاتيح الرقمية المشتركة (Shared Credentials)", "s": "قمت بإنشاء حساب واحد في تطبيق القفل الذكي وشاركت نفس اسم المستخدم وكلمة السر مع كل أفراد الأسرة، والعمال المؤقتين، والضيوف. في أحد الأيام، فتح الباب في وقت متأخر ولم تستطع معرفة من فتح الباب من خلال السجل لأن الجميع يستخدمون نفس الحساب!", "q": "كيف تصحح نظام إدارة الهويات وصلاحيات القفل الذكي؟", "o": [["إنشاء حسابات فرعية مستقلة بصلاحيات محددة لكل فرد، وتوليد رموز مؤقتة للضيوف والعمال تنتهي بعد ساعات، وتفعيل التنبيه اللحظي بالاسم 🔑", 1, "مبدأ المحاسبية والمساءلة (Accountability)! 🌟 فصل الحسابات يتيح لك معرفة من دخل بالضبط ومتى، وتحديد أوقات دخول محددة للعمال.", 15], ["تغيير كلمة المرور المشتركة وإرسالها في رسالة نصية عادية للجميع مجدداً", 0, "استمرار لنفس المشكلة! ❌ الحساب المشترك يمنع تدقيق السجلات ويزيد من احتمالية تسريب كلمة السر.", 0]]}, {"t": "المرحلة 2: منع التجاوز الميكانيكي والسيبراني للطوارئ", "s": "بعض الأقفال الذكية تحتوي على مفتاح ميكانيكي تقليدي للطوارئ وثغرات في حماية البطارية ضد الصدمات الكهربائية (EMP Attack).", "q": "ما هو التدبير الأمني الشامل للقفل الرئيسي للمنزل؟", "o": [["اختيار قفل مدعوم بحماية ضد الصدمات الكهربائية (EMP Shielded)، مع أسطوانة ميكانيكية مضادة للالتقاط (Anti-pick Cylinder)، وربطه بجهاز إنذار مستقل 🚪", 1, "أمن دفاعي متكامل! 🏆 الأمن السيبراني يجب أن يقترن بالأمن الفيزيائي لضمان عدم فتح الباب بأي حيلة تقنية أو ميكانيكية.", 15], ["الاعتماد كلياً على القفل الإلكتروني دون أي وسيلة ميكانيكية حتى لو نفدت البطارية", 0, "مخاطرة احتجاز! ⚠️ في حال نفاد البطارية أو حدوث ماس كهربائي قد تعلق العائلة داخل أو خارج المنزل.", 0]]}]}, {"id": "device_tv", "name": "التلفزيون الذكي Smart TV 📺", "room": "غرفة المعيشة", "icon": "📺", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"3\" width=\"20\" height=\"14\" rx=\"2\"/><line x1=\"8\" y1=\"21\" x2=\"16\" y2=\"21\"/><line x1=\"12\" y1=\"17\" x2=\"12\" y2=\"21\"/></svg>", "title": "منع تسريب البيانات السلوكية ومراقبة حركة البيانات", "q": [{"t": "المرحلة 1: مراقبة تدفقات البيانات التجسسية (Telemetry)", "s": "أثناء فحصك لتقرير استهلاك الإنترنت في الراوتر، لاحظت أن التلفزيون الذكي يرسل مئات الطلبات المشبوهة كل ساعة إلى نطاقات إعلانية مجهولة حتى أثناء وضع الاستعداد (Standby)، حيث يقوم بتحليل أصوات الغرفة واهتمامات الأسرة عبر تقنية ACR!", "q": "كيف توقف هذا النزيف في خصوصية العائلة وبياناتها؟", "o": [["تعطيل ميزة 'التعرف التلقائي على المحتوى' (ACR) من إعدادات الشاشة، واستخدام خادم DNS محلي مانع للتتبع (مثل Pi-hole أو AdGuard Home) لحظر نطاقات التجسس 🛑", 1, "حل تقني متقدم جداً! 🌟 استخدام خوادم DNS المانعة للتتبع يقطع الاتصال بين الأجهزة الذكية وخوادم جمع البيانات الإعلانية الفضولية.", 15], ["فصل كابل الكهرباء عن التلفزيون بعد كل استخدام وإعادته", 0, "حل مرهق وغير عملي! ❌ وبمجرد تشغيله سيعود لنقل البيانات السلوكية مجدداً.", 0]]}, {"t": "المرحلة 2: حماية مشاركة الشاشة اللاسلكية (Miracast / AirPlay)", "s": "بروتوكولات البث اللاسلكي للشاشة تسمح للأجهزة القريبة ببث محتواها على التلفزيون دون مصادقة في حال تركها على الإعدادات المفتوحة.", "q": "كيف تمنع الجيران أو المتطفلين من بث مقاطع غير لائقة على شاشة منزلك؟", "o": [["تعيين رمز PIN إلزامي يُعرض على الشاشة لكل محاولة اتصال ومشاركة شاشة جديدة، وقصر الاتصال على الأجهزة الموثوقة فقط 📺", 1, "حماية تمنع الإحراج والتسلل! 🏆 تفعيل رمز PIN للمشاركة اللاسلكية يمنع أي جهاز قريب من إرسال إشارات غير مرغوبة إلى شاشتك.", 15], ["ترك المشاركة مفتوحة بدون كود لتسهيل بث الفيديوهات من أي جهاز", 0, "ثغرة إزعاج واختراق! ⚠️ يستطيع أي شخص ضمن نطاق الواي فاي أو البلوتوث عرض محتوى مسيء على شاشتكم فجأة.", 0]]}]}, {"id": "device_computer", "name": "حاسوب المكتب Computer 💻", "room": "المكتب", "icon": "💻", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"12\" rx=\"2\"/><path d=\"M2 20h20\"/></svg>", "title": "تأمين بيانات العمل وحماية بيئة العمل عن بعد (WFH)", "q": [{"t": "المرحلة 1: التصدي للتصيد الموجه لكبار الموظفين (Spear Phishing)", "s": "وصلك بريد إلكتروني موجه باسمك ومنتحل صفة مدير الموارد البشرية بشركتك، يحتوي على جدول تعديل الرواتب في ملف Word مرفق يتطلب تفعيل 'وحدات الماكرو' (Enable Macros) لعرض المحتوى!", "q": "ما هو الخطر الكامن في وحدات الماكرو وكيف تتصرف بحكمة؟", "o": [["ملفات الماكرو هي وسيلة شائعة لتشغيل نصوص برمجية خبيثة في الذاكرة (PowerShell Payloads)! أرفض تفعيل الماكرو فوراً، وأبلغ قسم أمن المعلومات في الشركة 🛡️", 1, "وعي أمني قيادي رفيع! 🌟 هجمات التصيد الموجه بالماكرو هي السبب الأول في اختراق كبرى المؤسسات وتجاوز مضادات الفيروسات التقليدية.", 15], ["الضغط على 'تفعيل الماكرو' للاطلاع على تفاصيل زيادة الراتب", 0, "اختراق بيئة العمل! 🚨 تفعيل الماكرو يمنح المهاجم موطئ قدم داخل حاسوبك وشبكة عملك.", 0]]}, {"t": "المرحلة 2: تطبيق مبدأ الامتيازات الأقل وتشفير الأقراص (BitLocker)", "s": "الحاسوب يحتوي على ملفات العمل المصرفية وأسرار المشاريع، ويستخدمه في بعض الأوقات أطفالك لتصفح الإنترنت والألعاب.", "q": "كيف تعزل بيئة العمل الحساسة عن المخاطر المنزلية وتحمي البيانات عند فقدان الجهاز؟", "o": [["تشفير القرص بالكامل عبر BitLocker/FileVault، وإنشاء حساب مستخدم قياسي (Standard User) بدون صلاحيات مسؤول للاستخدام اليومي، وحصر بيانات العمل في حساب منفصل 💻", 1, "تطبيق متقن لمبدأ Least Privilege! 🏆 استخدام حساب بدون صلاحيات Administrator يمنع 95% من البرمجيات الخبيثة من التثبيت في النظام.", 15], ["استخدام حساب المشرف (Administrator) لجميع أفراد الأسرة دون كلمات مرور", 0, "خطر فادح! ⚠️ أي نقرة خاطئة من طفل على رابط مشبوه ستمنح الفيروس سيطرة كاملة على النظام بدون أي مقاومة.", 0]]}]}, {"id": "device_console", "name": "منصة الألعاب 🎮", "room": "غرفة الطفل", "icon": "🎮", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"6\" width=\"20\" height=\"12\" rx=\"4\"/><line x1=\"6\" y1=\"12\" x2=\"10\" y2=\"12\"/><line x1=\"8\" y1=\"10\" x2=\"8\" y2=\"14\"/><circle cx=\"15\" cy=\"11\" r=\"1.5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"13.5\" r=\"1.5\" fill=\"currentColor\"/></svg>", "title": "إدارة الخصوصية وحماية الأطفال من الاستدراج السيبراني", "q": [{"t": "المرحلة 1: كشف محاولات الهندسة الاجتماعية والاستدراج عبر غرف الدردشة", "s": "أثناء متابعتك لطفلك وهو يلعب، لاحظت أن شخصاً في الدردشة الصوتية يطرح عليه أسئلة شخصية مثل: 'أين تسافرون في العطلة؟ هل والدك في المنزل الآن؟ ما نوع سيارتكم؟'، ويطلب منه نقل المحادثة لتطبيق سري خارج اللعبة.", "q": "ما هو الإجراء التربوي والتقني الحاسم لحماية طفلك؟", "o": [["التدخل الفوري لإنهاء الاتصال، وتوعية الطفل بمخاطر مشاركة المعلومات الواقعية، وحظر اللاعب والإبلاغ عنه، وتعديل إعدادات الخصوصية لحصر المحادثات بالأصدقاء المعتمدين 🛡️", 1, "موقف أبوي وقائي ممتاز! 🌟 حماية الأطفال تبدأ بالحوار والتوعية بجانب الضوابط التقنية الصارمة.", 15], ["السماح للطفل بالإجابة طالما أنه يلعب ويسلي وقته", 0, "تهاون كارثي! 🚨 هذه المعلومات قد تستغل في التخطيط لسرقة المنزل أو الابتزاز.", 0]]}, {"t": "المرحلة 2: تقييد المحتوى والشراء عبر حساب العائلة المشترك", "s": "منصات الألعاب الحديثة توفر نظام 'إدارة العائلة' (Family Management) لربط حسابات الأطفال بحساب ولي الأمر.", "q": "ما هي التكوينات التي يجب تفعيلها لحماية الطفل مالياً ونفسياً؟", "o": [["ضبط التصنيف العمري للألعاب وفق مقياس PEGI/ESRB، وتعطيل الشراء التلقائي برمز PIN لولي الأمر، وحظر مشاركة الموقع الجغرافي والبيانات الشخصية 🎮", 1, "إحكام رقمي سليم! 🏆 يمنع وصول الألعاب العنيفة أو غير المناسبة لسن الطفل ويحمي الأسرة من المفاجآت المالية.", 15], ["منح الطفل حساباً بالغاً كاملاً وتجاوز قيود العمر لتفادي تكرار طلب الأذونات", 0, "تخلٍ عن المسؤولية الرقابية! ⚠️ يعرض الطفل لمحتوى مؤذٍ نفسياً وعمليات استغلال رقمي.", 0]]}]}, {"id": "device_doorbell", "name": "الجرس الذكي Smart Doorbell 🔔", "room": "مدخل المنزل", "icon": "🔔", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9\"/><path d=\"M13.73 21a2 2 0 0 1-3.46 0\"/></svg>", "title": "التصدي لهجمات حجب الخدمة والتشويش اللاسلكي", "q": [{"t": "المرحلة 1: كشف هجمات التشويش اللاسلكي (Wi-Fi Deauthentication / Jamming)", "s": "أجهزة الجرس الذكي المتصلة بالواي فاي قد تتعرض لهجوم إرسال حزم قطع الاتصال (Deauth Packets) بواسطة أجهزة رخيصة يستخدمها اللصوص لفصل جرس الباب عن الشبكة قبل الاقتراب من المنزل لتعطيل التقاط الفيديو!", "q": "كيف تحصن جرس المنزل من هجمات التشويش وإلغاء المصادقة اللاسلكية؟", "o": [["تفعيل ميزة 'إطارات الإدارة المحمية' (Protected Management Frames - 802.11w) في الراوتر لمنع تزوير حزم Deauth، وتفضيل الاتصال السلكي (PoE) إن أمكن 🔔", 1, "حل تقني متقدم جداً يجهله معظم المستخدمين! 🌟 بروتوكول PMF يمنع المهاجمين من فصل أجهزة المراقبة عن الواي فاي عبر التشفير الإلزامي لحزم التحكم.", 15], ["الاعتماد على شبكة واي فاي عادية غير مشفرة لتسهيل استعادة الاتصال تلقائياً", 0, "تسهيل لمهمة المهاجم! ❌ الشبكات غير المشفرة تكون أكثر هشاشة أمام هجمات الحجب والتنصت.", 0]]}, {"t": "المرحلة 2: حماية التخزين والامتثال لقوانين حماية الخصوصية", "s": "تصوير الممرات العامة والجيران قد يعرضك لمساءلات قانونية في حال تسريب التسجيلات أو تصوير مناطق خارج نطاق ملكيتك.", "q": "ما هو الإعداد الصحيح لمجال رؤية وتخزين الجرس الذكي؟", "o": [["تحديد مناطق الخصوصية (Privacy Zones) لحجب منازل الجيران والشارع العام، وتشفير التخزين السحابي بكلمة مفتاحية خاصة لا يملكها مزود الخدمة 📹", 1, "امتثال قانوني وأخلاقي رفيع! 🏆 حجب ممتلكات الجيران يحمي من الشكاوى القانونية، والتشفير الخاص يحمي التسجيلات من أي اختراق سحابي.", 15], ["توجيه الكاميرا مباشرة نحو نافذة الجيران لمراقبة الشارع بالكامل ومشاركة البث علناً", 0, "انتهاك صارخ لخصوصية الآخرين ومخالفة صريحة لقوانين الجرائم المعلوماتية! ❌", 0]]}]}, {"id": "device_speaker", "name": "المكبر الذكي Smart Speaker 🔊", "room": "غرفة المعيشة", "icon": "🔊", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"4\"/><circle cx=\"12\" cy=\"14\" r=\"4\"/><circle cx=\"12\" cy=\"6\" r=\"1\" fill=\"currentColor\"/></svg>", "title": "حوكمة البيانات الصوتية وتأمين مهارات الطرف الثالث", "q": [{"t": "المرحلة 1: تدقيق التطبيقات الصوتية الخارجية (Malicious Voice Skills)", "s": "قام أحد أفراد العائلة بتثبيت مهارة صوتية جديدة للألغاز والنكت من متجر المساعد الذكي. الباحثون الأمنيون اكتشفوا أن بعض هذه التطبيقات الصوتية الخارجية تحتال على المستخدم بالبقاء في وضع 'الاستماع الصامت' بعد انتهاء اللعبة لتسجيل محادثات الغرفة!", "q": "كيف تفحص وتحمي المكبر الذكي من هذه التطبيقات المتسللة؟", "o": [["مراجعة قائمة المهارات الصوتية المثبتة بانتظام، وحذف المهارات غير الموثوقة أو مجهولة المطور، والتأكد من إضاءة مؤشر الميكروفون عند التنشيط فقط 🎙️", 1, "تدقيق سيبراني حكيم! 🌟 مهارات الطرف الثالث (Third-Party Skills) قد تكون وسيلة خفية لاختراق خصوصية البيوت بدون إذن.", 15], ["تثبيت كل المهارات المتاحة لتجربتها وتركها تعمل في الخلفية دائماً", 0, "فتح أبواب التجسس! ⚠️ المهارات غير المدققة تشكل خطراً دائماً على سرية محادثات الأسرة.", 0]]}, {"t": "المرحلة 2: عزل المساعد الذكي عن الأجهزة الحساسة في المنزل", "s": "المساعد الصوتي مرتبط بنظام إضاءة المنزل، وأقفال الأبواب، وحساب بطاقة الائتمان للشراء التلقائي.", "q": "ما هو مبدأ الأمان الواجب تطبيقه في إدارة تكامل إنترنت الأشياء (IoT Integration)؟", "o": [["فصل الأجهزة الأمنية الحرجة (مثل أقفال الأبواب وأجهزة الإنذار) عن التحكم الصوتي المباشر، وتعيين حدود ائتمانية صارمة للشراء 🔒", 1, "تطبيق مبدأ دفاع الأعماق (Defense in Depth)! 🏆 لا ينبغي أبداً ربط أمان الأبواب الخارجية الحساسة بمساعد صوتي قد يستجيب لأوامر غير مقصودة.", 15], ["ربط كل شيء بالمساعد الصوتي والسماح بفتح الأبواب فوراً بمجرد سماع الأمر بدون أي رمز سري", 0, "تهديد أمني مباشر لحياة وممتلكات الأسرة! ❌", 0]]}]}, {"id": "device_printer", "name": "الطابعة الذكية Printer 🖨️", "room": "المكتب", "icon": "🖨️", "svg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M6 9V2h12v7\"/><path d=\"M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2\"/><rect x=\"6\" y=\"14\" width=\"12\" height=\"8\"/></svg>", "title": "منع استغلال الطابعة كنقطة اختراق وتسلل للشبكة", "q": [{"t": "المرحلة 1: سد ثغرة بروتوكولات الإدارة القديمة (SNMP & Telnet)", "s": "الطابعة الذكية في مكتب المنزل تحتوي على خدمات إدارة قديمة مفعلة افتراضياً مثل SNMPv1/v2 التي تستخدم كلمة سر افتراضية مكشوفة عالمياً (`public`)، وتسمح باستخراج إعدادات الشبكة وكلمات سر الواي فاي المحفوظة في ذاكرة الطابعة!", "q": "كيف تحصن بروتوكولات إدارة الطابعة وتمنع تسريب أسرار الشبكة؟", "o": [["إيقاف بروتوكولات Telnet و SNMP غير المشفرة، أو الترقية إلى SNMPv3 المشفر بمصادقة قوية، وتغيير سلسلة المجتمع الافتراضية 'public' فوراً 🖨️", 1, "تدبير احترافي لمنع استغلال بروتوكولات الإدارة القديمة! 🌟 المخترقون يبحثون عن أجهزة الطابعات لأنها نادراً ما يتم الانتباه لتحديثها.", 15], ["ترك بروتوكول SNMP مفتوحاً بكلمة 'public' لسهولة توصيل أي جهاز جديد", 0, "ثغرة تسريب معلومات فاضحة! ⚠️ يمكن لأي أداة فحص استخراج خريطة الشبكة وأسماء المستخدمين في ثوانٍ.", 0]]}, {"t": "المرحلة 2: تحديث البرمجيات الثابتة وتشفير اتصالات SSL/TLS", "s": "كشفت تقارير أمنية عن ثغرة حرجة تسمح بتنفيذ تعليمات برمجية عن بعد (Remote Code Execution) عبر معالجة ملفات PostScript الخبيثة داخل معالج الطابعة.", "q": "ما هي خطة الصيانة الأمنية الوقائية لطابعات المنزل والمكتب؟", "o": [["تثبيت آخر تحديث أمني للـ Firmware من الموقع الرسمي للشركة المصنعة، وإلزام استخدام بروتوكول HTTPS المشفر لصفحة الإدارة وتفعيل جدار حماية الطابعة 🛡️", 1, "حماية متكاملة ومستدامة! 🏆 التحديث الدوري يسد الثغرات المكتشفة ويجعل الطابعة حصناً منيعاً لا يمكن استغلاله كمنصة هجوم.", 15], ["تجاهل تحديث الطابعة طالما أنها تطبع الورق بشكل عادي", 0, "إهمال جسيم! ❌ معظم عمليات اختراق الشبكات المنزلية تتم عبر أجهزة منسية لم يتم تحديث برمجياتها لسنوات.", 0]]}]}]};
+const DEV_PCT=7, ATK_PCT=8, ATK_AT=[5,9]; // 12 أجهزة × 7% + هجومان × 8% = 100%
+const ROOMS=[
+ {id:'child',n:'غرفة الطفل',ic:'🧸'},{id:'office',n:'المكتب',ic:'🗂️'},{id:'kitchen',n:'المطبخ',ic:'🍳'},
+ {id:'entrance',n:'مدخل المنزل',ic:'🚪'},{id:'living',n:'غرفة المعيشة',ic:'🛋️'}];
+const ICON_EXTRA={
+ fridge:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="5" y1="10" x2="19" y2="10"/><line x1="8" y1="5" x2="8" y2="7"/><line x1="8" y1="13" x2="8" y2="17"/></svg>',
+ hub:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="1.6"/><circle cx="19" cy="5" r="1.6"/><circle cx="5" cy="19" r="1.6"/><circle cx="19" cy="19" r="1.6"/><path d="M6.3 6.3l3.6 3.6M17.7 6.3l-3.6 3.6M6.3 17.7l3.6-3.6M17.7 17.7l-3.6-3.6"/></svg>'};
+const MAP={device_phone:'phone',device_console:'console',device_computer:'computer',device_printer:'printer',device_camera:'camera',device_doorbell:'doorbell',device_lock:'lock',device_router:'router',device_tv:'tv',device_speaker:'speaker'};
+const ICONS={};T.child.forEach(d=>ICONS[MAP[d.id]]=d.svg);Object.assign(ICONS,ICON_EXTRA);
+const DEVICES=[
+ {id:'phone',n:'الهاتف الذكي',room:'child',tip:'للاتصال والرسائل والتطبيقات'},
+ {id:'console',n:'منصة الألعاب',room:'child',tip:'ألعاب أونلاين ودردشة'},
+ {id:'computer',n:'الحاسوب',room:'office',tip:'للعمل والدراسة والبريد'},
+ {id:'printer',n:'الطابعة الذكية',room:'office',tip:'تطبع عبر الواي فاي'},
+ {id:'fridge',n:'الثلاجة الذكية',room:'kitchen',tip:'ثلاجة بشاشة واتصال بالإنترنت'},
+ {id:'hub',n:'مركز IoT',room:'kitchen',tip:'يتحكم بكل الأجهزة الذكية'},
+ {id:'camera',n:'الكاميرا الذكية',room:'entrance',tip:'تراقب باب المنزل'},
+ {id:'doorbell',n:'الجرس الذكي',room:'entrance',tip:'يُظهر من بالباب'},
+ {id:'lock',n:'القفل الذكي',room:'entrance',tip:'يقفل باب المنزل'},
+ {id:'router',n:'راوتر Wi-Fi',room:'living',tip:'يوصّل المنزل بالإنترنت'},
+ {id:'tv',n:'التلفزيون الذكي',room:'living',tip:'مشاهدة وتطبيقات'},
+ {id:'speaker',n:'المكبر الذكي',room:'living',tip:'يستمع للأوامر الصوتية'}];
+const BADGE={review:'! يحتاج فحص',vuln:'✖ غير آمن',secure:'✓ آمن'};
+const TOPICS={
+ kid:['كلمات المرور القوية','التصيد والروابط المشبوهة','مشاركة رمز OTP','الخصوصية','تحديثات الأجهزة','الهندسة الاجتماعية','التنمر والابتزاز','الألعاب الآمنة','أمان الشبكة والراوتر','الإبلاغ وطلب المساعدة','أمان الأجهزة الذكية','فحص الأجهزة','التصدي للهجمات'],
+ parent:['أمان الراوتر','أمان الأجهزة الذكية','الرقابة الأبوية','إعدادات الخصوصية','التصيد والروابط المشبوهة','النسخ الاحتياطي','تحديثات الأجهزة','أمان الحسابات (MFA)','الأجهزة المتصلة بالشبكة','حماية الأطفال على الإنترنت','فحص الأجهزة','التصدي للهجمات']};
+const CAT={
+ kid:{phone:['التصيد والروابط المشبوهة','الخصوصية'],console:['الألعاب الآمنة','كلمات المرور القوية'],router:['أمان الشبكة والراوتر','أمان الشبكة والراوتر'],tv:['الهندسة الاجتماعية','الخصوصية'],speaker:['أمان الأجهزة الذكية','الخصوصية'],computer:['التصيد والروابط المشبوهة','تحديثات الأجهزة'],printer:['أمان الأجهزة الذكية','الخصوصية'],camera:['كلمات المرور القوية','أمان الأجهزة الذكية'],doorbell:['مشاركة رمز OTP','أمان الأجهزة الذكية'],lock:['أمان الأجهزة الذكية','كلمات المرور القوية']},
+ parent:{router:['أمان الراوتر','أمان الراوتر'],phone:['الرقابة الأبوية','أمان الحسابات (MFA)'],camera:['أمان الأجهزة الذكية','أمان الأجهزة الذكية'],lock:['أمان الأجهزة الذكية','أمان الأجهزة الذكية'],tv:['إعدادات الخصوصية','أمان الأجهزة الذكية'],computer:['التصيد والروابط المشبوهة','أمان الحسابات (MFA)'],console:['حماية الأطفال على الإنترنت','الرقابة الأبوية'],doorbell:['أمان الأجهزة الذكية','إعدادات الخصوصية'],speaker:['أمان الأجهزة الذكية','إعدادات الخصوصية'],printer:['أمان الأجهزة الذكية','تحديثات الأجهزة']}};
+function conv(src,role){
+  const r={};
+  T[src].forEach(d=>{const id=MAP[d.id];
+    r[id]=d.q.map((q,i)=>{const good=q.o.find(o=>o[1]);
+      return {topic:CAT[role][id][i],pts:good?good[3]:15,title:q.t.replace(/^المرحلة\s*\d+\s*[:：]\s*/,''),show:{kind:'story',text:q.s},q:q.q,opts:q.o.map(o=>[o[0],o[1],o[2]]),ok:good?good[2]:''}})});
+  return r;
+}
+const decoy=rows=>({decoy:1,topic:'فحص الأجهزة',pts:10,title:'كل شيء يبدو سليمًا',
+ show:{kind:'rows',title:'الإعدادات التي وجدناها',rows:rows.map(r=>[r[0],r[1],'good'])},
+ q:'الإعدادات تبدو سليمة. ما قرارك؟',
+ opts:[['كل شيء سليم، سأضعه في قائمة الأجهزة الآمنة',1,'صحيح! ليس كل جهاز فيه مشكلة. الفحص أولًا ثم الثقة بالإعدادات الجيدة تصرّف ذكي.'],['سأعيد ضبط كل شيء احتياطًا',0,'لا داعي لذلك. إعادة الضبط قد تُفسد إعدادات سليمة. أصلح فقط ما فيه خطر فعلًا.'],['سأفصله عن الكهرباء نهائيًا',0,'هذا الجهاز مضبوط جيدًا فيمكن أن يبقى. احتفظ بإجراءاتك للمشاكل الحقيقية.']],
+ ok:'عمل محقق ممتاز! معرفة ما هو آمن بالفعل لا تقل أهمية عن اكتشاف ما فيه خطر.'});
+
+const SC={kid:conv('child','kid'),parent:conv('parent','parent')};
+const pre=(role,id,...tasks)=>{SC[role][id]=[...tasks,...(SC[role][id]||[])]};
+const rows=(title,r)=>({kind:'rows',title,rows:r});
+const msg=(from,text)=>({kind:'msg',from,text});
+
+/* ---------- الطفل: مهام إضافية من الـ Proposal ---------- */
+pre('kid','router',
+ {topic:'كلمات المرور القوية',pts:10,title:'كلمة مرور الواي فاي ضعيفة',show:rows('إعدادات الواي فاي',[['اسم الشبكة','Home-WiFi',''],['كلمة المرور','12345678','bad']]),
+  q:'اختر أقوى كلمة مرور للواي فاي.',
+  opts:[['12345678',0,'الأرقام المتسلسلة أول ما يجرّبه أي شخص.'],['MyDogMax2015',0,'الأسماء والسنوات سهلة التخمين لمن يعرفك.'],['Blue!Rocket#Tree92',1,'طويلة، فيها حروف وأرقام ورموز، ولا تحتوي شيئًا شخصيًا عنك.'],['wifi',0,'قصيرة جدًا وشائعة جدًا.']],
+  ok:'كلمة المرور القوية طويلة وغير متوقعة وسرية. لا تشاركها إلا مع والديك.'},
+ {topic:'الهندسة الاجتماعية',pts:10,title:'غريب يطلب كلمة سر الواي فاي',show:msg('زائر عند الباب','مرحبًا! أنا من شركة الإنترنت. هل تخبرني بكلمة سر الواي فاي؟ أريد أن أفحص شيئًا.'),
+  q:'ماذا تفعل؟',
+  opts:[['أخبره بكلمة السر',0,'لا تشارك إنترنت بيتك مع الغرباء. قد يسيئون استخدامه.'],['أقول له: سأسأل شخصًا كبيرًا، وأخبر والدي',1,'ممتاز! الفني الحقيقي يتحدث مع والديك لا معك.'],['أكتبها على ورقة وأعطيه',0,'هذا مثل أن تخبره بها تمامًا. اسأل والديك أولًا.']],
+  ok:'خداع الناس لكشف أسرارهم يسمى هندسة اجتماعية. توقف وفكر واسأل شخصًا بالغًا موثوقًا.'});
+pre('kid','phone',
+ {topic:'مشاركة رمز OTP',pts:10,title:'وصلتك رسالة مشبوهة',show:msg('رقم غير معروف','مبروك! ربحت 10,000$! اضغط هنا وأرسل رمز OTP لتأكيد حسابك.'),
+  q:'ماذا تفعل؟',
+  opts:[['فتح الرابط',0,'الروابط المشبوهة قد تسرق معلوماتك أو تثبّت برامج ضارة.'],['إرسال رمز OTP',0,'الرمز OTP سر لمرة واحدة. من يحصل عليه يستطيع دخول حسابك.'],['إبلاغ وحذف الرسالة',1,'صحيح! أبلغ عنها ثم احذفها.']],
+  ok:'قد تكون هذه الرسالة تصيدًا احتياليًا. لا تشارك رمز OTP أبدًا ولا تضغط على روابط مشبوهة.'},
+ {topic:'الخصوصية',pts:20,multi:1,title:'حساب التواصل الاجتماعي غير خاص',show:rows('إعدادات حسابك',[['الحساب','عام','bad'],['يظهر في الملف','الهاتف والمدرسة','bad'],['كلمة المرور','نفس كلمة اللعبة','bad']]),
+  q:'اختر كل الإعدادات الأكثر أمانًا.',
+  opts:[['أجعل الحساب خاصًا',1,'فقط الأصدقاء الذين توافق عليهم يرون منشوراتك.'],['أخفي رقم هاتفي ومدرستي وتاريخ ميلادي',1,'المعلومات الشخصية القليلة تجعل العثور عليك أصعب.'],['لا أشارك كلمة المرور أو رمز OTP أبدًا',1,'هذه أسرارك وحدك.'],['أقبل كل طلبات الصداقة',0,'الغرباء ليسوا أصدقاء. اقبل من تعرفهم فقط.'],['أنشر موقعي مباشرة',0,'مشاركة مكانك قد تكون خطيرة.']],
+  ok:'حساب خاص، معلومات شخصية قليلة، ولا مشاركة أبدًا لكلمات المرور أو رموز OTP.'});
+pre('kid','console',
+ {topic:'التنمر والابتزاز',pts:10,title:'شخص يهددك أونلاين',show:msg('مستخدم مجهول في دردشة اللعبة','أرسل لي صورة خاصة وإلا سأنشر سرّك أمام الجميع.'),
+  q:'ما أفضل تصرف؟',
+  opts:[['أرسل الصورة حتى يتوقف',0,'لا ترسلها أبدًا. هذا يعطيه قوة أكبر وسيطلب المزيد.'],['لا أرد، أحفظ لقطة شاشة، أحظره، وأخبر شخصًا بالغًا أثق به',1,'بالضبط. أنت لم تخطئ، والكبار يستطيعون مساعدتك.'],['أهدده بالمقابل',0,'قد يزيد الأمر سوءًا. اطلب المساعدة بدلًا من ذلك.']],
+  ok:'الابتزاز جريمة. احتفظ بالدليل، احظر، أبلغ، وأخبر أحد والديك أو معلمك فورًا.'});
+pre('kid','computer',
+ {topic:'تحديثات الأجهزة',pts:10,title:'الجهاز يحتاج تحديثًا',show:rows('رسالة النظام',[['إصدار البرنامج','قديم','bad'],['التحديث','متاح','']]),
+  q:'جهازك يعمل بإصدار قديم. ماذا تفعل؟',
+  opts:[['أتجاهل التحديث',0,'البرامج القديمة فيها ثغرات يستغلها المهاجمون.'],['أحدّث الجهاز (بمساعدة أحد الوالدين)',1,'صحيح! التحديثات تصلح المشاكل الأمنية المعروفة.'],['أنزّل برنامجًا من موقع غير معروف',0,'المواقع غير المعروفة قد تخفي برامج ضارة.']],
+  ok:'التحديثات الأمنية تصلح الثغرات المعروفة. حدّث دائمًا من إعدادات الجهاز الرسمية.'});
+pre('kid','hub',
+ {topic:'الإبلاغ وطلب المساعدة',pts:10,title:'جهاز غير معروف على الشبكة',show:rows('الأجهزة المتصلة',[['التلفزيون الذكي','معروف','good'],['التابلت','معروف','good'],['جهاز غير معروف','جديد!','bad']]),
+  q:'المركز يعرض جهازًا لا تعرفه. ماذا تفعل؟',
+  opts:[['أتجاهله',0,'قد يكون شخصًا يستخدم واي فاي بيتكم.'],['أخبر والدي فورًا',1,'نعم. الوالدان يستطيعان فحص الراوتر وحظره.'],['أحاول اختراقه للانتقام',0,'لا تهاجم أبدًا. أبلغ شخصًا بالغًا.']],
+  ok:'الأجهزة غير المعروفة على الشبكة يجب أن تُبلَّغ لأحد الوالدين.'});
+SC.kid.fridge=[decoy([['الاتصال','شبكة المنزل فقط'],['حساب الثلاجة','كلمة مرور قوية'],['التحديثات','تلقائية']])];
+
+/* ---------- ولي الأمر: مهام إضافية من الـ Proposal ---------- */
+pre('parent','router',
+ {kind:'router',topic:'أمان الراوتر',pts:20,title:'إعدادات الراوتر غير آمنة',show:rows('الإعدادات التي وجدناها',[['كلمة مرور الواي فاي','12345678','bad'],['التشفير','WEP','bad'],['WPS','ON','bad'],['كلمة مرور الإدارة','admin','bad']]),
+  q:'أصلح إعدادات الراوتر ثم اضغط SECURE ROUTER.',ok:'كلمة مرور قوية وفريدة، وتشفير WPA3، وإيقاف WPS، وكلمة مرور إدارة قوية: هذه تغلق أشهر الأبواب إلى شبكة بيتك.'});
+pre('parent','phone',
+ {topic:'التصيد والروابط المشبوهة',pts:10,title:'رسالة بنك مشبوهة',show:msg('SMS: BANK-ALERT','حسابك موقوف. تحقق الآن عبر bit.ly/xk29 وإلا سيتم إغلاقه.'),
+  q:'ماذا تفعل؟',
+  opts:[['أضغط الرابط وأسجل الدخول',0,'الروابط المختصرة تخفي مواقع مزيفة تسرق بيانات الدخول.'],['أحذفها وأتواصل مع البنك عبر تطبيقه الرسمي أو رقمه',1,'صحيح. البنوك لا تطلب منك تسجيل الدخول عبر روابط الرسائل.'],['أرد ببياناتي',0,'لا ترسل بيانات شخصية عبر الرسائل أبدًا.']],
+  ok:'التصيد ينتحل صفة جهة موثوقة. تحقق دائمًا عبر القنوات الرسمية فقط.'},
+ {topic:'النسخ الاحتياطي',pts:10,title:'لا توجد نسخة احتياطية حديثة',show:rows('حالة النسخ الاحتياطي',[['آخر نسخة','قبل 8 أشهر','bad'],['النسخ التلقائي','متوقف','bad']]),
+  q:'ما أفضل حل؟',
+  opts:[['أفعّل النسخ الاحتياطي التلقائي المشفّر مع نسخة غير متصلة',1,'النسخ الاحتياطي يعيد لك الصور والملفات عند فقد الجهاز أو هجوم الفدية.'],['النسخ الاحتياطي غير ضروري',0,'فقدان هاتف واحد سيعني فقدان كل شيء.'],['أحتفظ بالصور على الهاتف فقط',0,'نسخة واحدة تعني نقطة فشل واحدة.']],
+  ok:'النسخ الاحتياطي المنتظم يحمي ذكريات العائلة ومستنداتها.'});
+pre('parent','camera',
+ {topic:'أمان الأجهزة الذكية',pts:10,title:'الكاميرا بها بيانات دخول المصنع',show:rows('بيانات دخول الكاميرا',[['اسم المستخدم','admin','bad'],['كلمة المرور','admin','bad']]),
+  q:'ما الخطأ هنا؟',
+  opts:[['أبقي كلمة المرور الافتراضية',0,'بيانات الدخول الافتراضية معروفة للجميع.'],['أغيّرها إلى كلمة مرور قوية وفريدة',1,'صحيح.'],['أشاركها مع العائلة',0,'الأفضل إنشاء حسابات منفصلة لأفراد العائلة.'],['أعطّل الحماية',0,'هذا يجعل الاختراق أسهل.']],
+  ok:'غيّر كلمات المرور الافتراضية في كل جهاز ذكي واستخدم كلمة مرور قوية وفريدة.'});
+pre('parent','computer',
+ {topic:'تحديثات الأجهزة',pts:10,title:'الجهاز يعمل بإصدار قديم',show:rows('رسالة النظام',[['إصدار البرنامج','قديم','bad'],['التحديث','متاح','']]),
+  q:'جهازك يعمل بإصدار قديم. ماذا تفعل؟',
+  opts:[['أتجاهل التحديث',0,'تبقى الثغرات المعروفة مفتوحة.'],['أحدّث الجهاز',1,'صحيح. التحديثات تسدّ نقاط الضعف المعروفة.'],['أنزّل برنامجًا من موقع غير معروف',0,'خطر: قد يحتوي على برمجيات خبيثة.']],
+  ok:'التحديثات الأمنية تصلح الثغرات المعروفة. فعّل التحديث التلقائي.'},
+ {topic:'أمان الحسابات (MFA)',pts:20,multi:1,title:'تنبيه دخول على بريدك',show:rows('تنبيه أمان البريد',[['دخول جديد','من دولة أخرى','bad'],['الجلسات النشطة','3 (واحدة غير معروفة)','bad'],['MFA','متوقف','bad']]),
+  q:'اختر كل الإجراءات المطلوبة.',
+  opts:[['أُنهي الجلسة غير المعروفة',1,'هذا يزيل وصول المتسلل.'],['أغيّر كلمة مرور البريد',1,'كلمة جديدة وفريدة تغلق الباب عليه.'],['أفعّل المصادقة متعددة العوامل MFA',1,'الخطوة الثانية تمنع استخدام كلمة مرور مسروقة.'],['أتجاهل، غالبًا لا شيء',0,'دخول غير معروف يجب فحصه دائمًا.'],['أستخدم نفس كلمة المرور لكل الحسابات',0,'تسريب واحد سيفتح كل حساباتك.']],
+  ok:'افحص الجلسات النشطة، استخدم كلمات مرور فريدة، وفعّل MFA للبريد والحسابات المهمة.'});
+pre('parent','hub',
+ {topic:'الأجهزة المتصلة بالشبكة',pts:20,title:'جهاز غير معروف على الشبكة',show:rows('الأجهزة على شبكتك',[['اللابتوب','معروف','good'],['الهاتفان (2)','معروف','good'],['Unknown Device','جديد!','bad']]),
+  q:'هل تعرف هذا الجهاز؟',
+  opts:[['السماح (Allow)',0,'لا تسمح أبدًا بما لا تستطيع التعرف عليه.'],['تجاهل (Ignore)',0,'قد يكون شخصًا يستخدم شبكتك.'],['فصله والتحقيق ثم تأمين الشبكة',1,'صحيح. احظره ثم غيّر كلمة الواي فاي وافحص الراوتر.']],
+  ok:'افحص الأجهزة المتصلة بانتظام وأزل أي جهاز لا تعرفه.'});
+SC.parent.fridge=[decoy([['الاتصال','شبكة المنزل فقط'],['الحساب','كلمة مرور قوية + MFA'],['التحديثات','تلقائية']])];
+
+/* ---------- الهجمات ---------- */
+const ATK={kid:[
+ {t:'تنبيه: شخص غريب!',s:'يرسل لك شخص لا تعرفه: "أنا من شركة اللعبة، أرسل لي الرمز الذي وصلك للتو".',
+  opts:[['أرسل الرمز',0,'هذا الرمز هو OTP. مشاركته تعني تسليم حسابك.'],['لا أرسله. أحظره وأبلغ عنه وأخبر شخصًا كبيرًا',1,'صحيح.'],['أطلب منه أن يثبت من هو',0,'لا تدخل في حديث معه. احظر وأبلغ.']],ok:'لا تشارك رموز OTP أبدًا. احظر وأبلغ وأخبر شخصًا بالغًا موثوقًا.'},
+ {t:'رابط غريب!',s:'رسالة من حساب صديقك: "هاهاها شوف هذا!" ومعها رابط غريب. صديقك لا يرسل روابط عادة.',
+  opts:[['أضغط عليه',0,'الحسابات قد تُسرق، والروابط منها قد تسرق معلوماتك.'],['لا أضغط. أسأل صديقي بطريقة أخرى وأخبر شخصًا كبيرًا',1,'صحيح.'],['أرسله لآخرين',0,'هذا ينشر الخطر.']],ok:'إذا بدت الرسالة غريبة فلا تضغط. تحقق من الشخص بطريقة أخرى.'}],
+ parent:[
+ {t:'محاولة تسلل إلى الشبكة',s:'يحاول شخص الوصول إلى شبكة منزلك: سجل الراوتر يُظهر محاولات دخول فاشلة متكررة إلى إدارة الراوتر والمنفذ 8080 (كاميرا) من عنوان IP مجهول.',
+  opts:[['أتجاهل الأمر',0,'المحاولات المتكررة تعني أن أحدهم يخمّن كلمة المرور.'],['أفعّل الجدار الناري وأحظر عنوان IP، وأغيّر كلمات المرور وأفحص الأجهزة',1,'صحيح.'],['أطفئ الجدار الناري لأجرّب',0,'هذا يفتح الباب أوسع.'],['أفتح المنفذ 8080 "للتجربة"',0,'فتح المنافذ من دون حاجة يزيد المخاطر.']],ok:'الجدار الناري وحظر العناوين المشبوهة وكلمات المرور القوية وWPA3 تصد هجمات التخمين.'},
+ {t:'رموز دخول لم تطلبها',s:'يهتز هاتفك مرارًا بطلبات موافقة لتسجيل الدخول إلى بريدك، وأنت لم تحاول الدخول.',
+  opts:[['أوافق على واحدة ليتوقف',0,'الموافقة تدخل المهاجم إلى حسابك.'],['أرفض الكل، أغيّر كلمة المرور وأُنهي الجلسات الأخرى',1,'صحيح.'],['أتجاهل وأوقف MFA',0,'إيقاف MFA يزيل أفضل حماية لديك.']],ok:'ارفض الطلبات غير المتوقعة، غيّر كلمة المرور، وراجع الجلسات النشطة.'}]};
+
+/* ---------- مصمم المنزل ---------- */
+const CATALOG=[
+ {cat:'📡 الشبكة',items:[{id:'wifi',e:'📡',ar:'راوتر Wi-Fi',s:'danger'},{id:'iot_hub',e:'📦',ar:'مركز IoT',s:'warning'}]},
+ {cat:'🛋️ غرفة المعيشة',items:[{id:'smart_tv',e:'📺',ar:'تلفاز ذكي',s:'warning'},{id:'speaker',e:'🔊',ar:'مكبر ذكي',s:'danger'},{id:'bulb',e:'💡',ar:'مصباح ذكي',s:'safe'}]},
+ {cat:'🔒 أمن ومراقبة',items:[{id:'camera',e:'📷',ar:'كاميرا ذكية',s:'danger'},{id:'doorbell',e:'🔔',ar:'جرس ذكي',s:'warning'},{id:'lock',e:'🔐',ar:'قفل ذكي',s:'warning'}]},
+ {cat:'📱 أجهزة شخصية',items:[{id:'phone',e:'📱',ar:'هاتف ذكي',s:'danger'},{id:'laptop',e:'💻',ar:'كمبيوتر محمول',s:'warning'},{id:'console',e:'🎮',ar:'جهاز ألعاب',s:'danger'},{id:'tablet',e:'🖥️',ar:'تابلت',s:'safe'}]},
+ {cat:'🏠 أجهزة منزلية',items:[{id:'fridge',e:'🧊',ar:'ثلاجة ذكية',s:'warning'},{id:'printer',e:'🖨️',ar:'طابعة',s:'safe'},{id:'washer',e:'🫧',ar:'غسالة ذكية',s:'safe'},{id:'therm',e:'🌡️',ar:'منظم حرارة',s:'safe'}]},
+ {cat:'💼 مكتب',items:[{id:'office_pc',e:'🖥️',ar:'كمبيوتر مكتبي',s:'warning'},{id:'nas',e:'💾',ar:'تخزين NAS',s:'danger'},{id:'webcam',e:'📸',ar:'كاميرا ويب',s:'danger'}]}];
+const PLAN_MAP={wifi:'router',iot_hub:'hub',smart_tv:'tv',speaker:'speaker',camera:'camera',doorbell:'doorbell',lock:'lock',phone:'phone',laptop:'computer',console:'console',tablet:'phone',fridge:'fridge',printer:'printer',office_pc:'computer'};
+
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const KEYS=['أ','ب','ج','د','هـ'];
+
+/* ---------- تخزين محلي ---------- */
+let DB={users:{},designs:{},latest:null};
+try{const s=localStorage.getItem('csh_v2');if(s)DB=JSON.parse(s)}catch(e){}
+function dbSave(){try{localStorage.setItem('csh_v2',JSON.stringify(DB))}catch(e){}}
+
+/* ---------- Supabase (تخزين مشترك) ---------- */
+const SB_URL='https://vrrdolthrgwrhyapsuoi.supabase.co';
+const SB_KEY='sb_publishable_dEaZ8WIsFJmGL08NLmwl8w_y5Ea9BLg';
+let pushT=null, REMOTE_LB=null;
+function setSync(ok){const e=document.getElementById('sync');if(e)e.textContent=ok?'☁️ متصل بالخادم':'⚠️ بدون اتصال (يُحفظ على الجهاز)'}
+async function sb(path,opt){
+  opt=opt||{};const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),9000);
+  try{
+    const r=await fetch(SB_URL+'/rest/v1/'+path,Object.assign({},opt,{signal:ctl.signal,headers:Object.assign({apikey:SB_KEY,'Content-Type':'application/json'},opt.headers||{})}));
+    clearTimeout(to);if(!r.ok)throw new Error('http '+r.status);
+    setSync(true);const t=await r.text();return t?JSON.parse(t):[];
+  }catch(e){clearTimeout(to);setSync(false);return undefined}
+}
+function remotePush(){
+  const st=S;if(!st)return;clearTimeout(pushT);
+  pushT=setTimeout(()=>{
+    const body={nick:st.key,role:st.role,score:st.score,security_pct:levelOfState(st),devices_secured:DEVICES.filter(d=>st.dev[d.id].status==='secure').length,challenges:st.done,correct:st.correct,mistakes:st.mistakes,time_taken:st.time,badge:badgeOf(st.score,st.role).k,state:st,updated_at:new Date().toISOString()};
+    sb('players?on_conflict=nick',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(body)});
+  },1200);
+}
+
+/* ---------- الحالة ---------- */
+let S=null, ui=null, atk=null, P=null, pendingRole=null, authMode='reg', lbFilter='all', lastFocus=null, confirmKey='', dragState=null;
+const dev=id=>DEVICES.find(d=>d.id===id);
+const tasks=id=>SC[S.role][id];
+const secured=()=>DEVICES.filter(d=>S.dev[d.id].status==='secure').length;
+const levelOfState=st=>Math.min(100,DEVICES.filter(d=>st.dev[d.id]&&st.dev[d.id].status==='secure').length*DEV_PCT+st.blocked*ATK_PCT);
+const level=()=>levelOfState(S);
+const totalTasks=()=>DEVICES.reduce((n,d)=>n+tasks(d.id).length,0)+2;
+const maxScore=role=>DEVICES.reduce((n,d)=>n+SC[role][d.id].reduce((m,t)=>m+t.pts,0),0)+60;
+const shuffle=n=>{const a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const fmtTime=s=>{const m=Math.floor(s/60),r=s%60;return m+':'+String(r).padStart(2,'0')+' د'};
+const badgeOf=(score,role)=>{const r=score/maxScore(role);return r>=.85?{k:'platinum',n:'بلاتيني',c:'#7FD6E0',e:'💎'}:r>=.65?{k:'gold',n:'ذهبي',c:'#FFC53D',e:'🥇'}:r>=.4?{k:'silver',n:'فضي',c:'#C4CCD4',e:'🥈'}:{k:'bronze',n:'برونزي',c:'#CD7F32',e:'🥉'}};
+
+function freshState(nick,role){
+  const st={key:nick.toLowerCase(),nick,role,page:'home',room:'living',dev:{},score:0,correct:0,mistakes:0,done:0,blocked:0,atkDone:[false,false],topics:[],time:0,celebrated:false,guide:true};
+  DEVICES.forEach(d=>st.dev[d.id]={status:'review',idx:0,scanned:false,tries:0,wrong:[]});
+  return st;
+}
+function persist(){if(!S)return;DB.users[S.key]={nick:S.nick,role:S.role,state:S};dbSave();remotePush()}
+const hasTopic=t=>S.topics.includes(t);
+
+/* ---------- الشاشات ---------- */
+function showScreen(id){['v-welcome','v-auth','v-admin','game'].forEach(x=>$('#'+x).hidden=(x!==id));window.scrollTo(0,0)}
+function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2600)}
+function lvlWord(l){return l>=100?'محمي بالكامل':l>=67?'قوي':l>=34?'يتحسن':'ضعيف'}
+function icon(id){return ICONS[id]||''}
+function renderTop(){
+  const l=level();
+  $('#lvlNum').textContent=l+'%';$('#lvlWord').textContent=lvlWord(l);
+  const f=$('#lvlFill');f.style.width=l+'%';f.style.setProperty('--bw',(l?10000/l:100)+'%');
+  $('#lvlBar').setAttribute('aria-valuenow',l);
+  $('#stScore b').textContent=S.score;$('#stDev').textContent=secured()+'/'+DEVICES.length;$('#stCh').textContent=S.done+'/'+totalTasks();
+  $('#who').textContent=S.nick+' · '+(S.role==='kid'?'طفل':'ولي أمر');
+  $('#planTab').textContent=S.role==='parent'?'المصمم':'الخريطة';
+  document.querySelectorAll('.tab').forEach(t=>{t.removeAttribute('aria-current');if(t.dataset.p===S.page)t.setAttribute('aria-current','page')});
+}
+function bump(){const s=$('#stScore');s.classList.remove('bump');void s.offsetWidth;s.classList.add('bump');$('#live').textContent='النقاط '+S.score+'. مستوى الأمان '+level()+' بالمئة.'}
+function shieldSVG(){
+  const l=level(),y=6+108*(1-l/100),c=l>=67?'hi':l>=34?'mid':'';
+  const p='M50 4 L92 20 V58 C92 88 72 108 50 116 C28 108 8 88 8 58 V20 Z';
+  return `<svg class="shield ${c}" viewBox="0 0 100 120" role="img" aria-label="درع المنزل ${l} بالمئة"><defs><clipPath id="sc"><rect x="0" y="${y}" width="100" height="120"/></clipPath></defs><path class="track" d="${p}"/><path class="fill" d="${p}" clip-path="url(#sc)"/><text x="50" y="74" text-anchor="middle">${l}%</text></svg>`;
+}
+function tile(d){
+  const st=S.dev[d.id].status;
+  return `<button class="dev s-${st}${S.pop===d.id?' pop':''}" data-act="dev" data-id="${d.id}" data-tip="${esc(d.tip)}. اضغط للفحص." aria-label="${esc(d.n)}، ${BADGE[st].slice(2)}. افتح الجهاز.">
+   <span class="ic" aria-hidden="true">${icon(d.id)}${d.id==='router'?'<span class="wifi">📶</span>':''}</span><span class="nm">${esc(d.n)}</span><span class="badge b-${st}">${BADGE[st]}</span></button>`;
+}
+function renderHome(){
+  const av=S.role==='kid'?'🧒':'🧑';
+  const rooms=ROOMS.map(r=>{
+    const ds=DEVICES.filter(d=>d.room===r.id),n=ds.filter(d=>S.dev[d.id].status==='secure').length;
+    return `<div class="room r-${r.id}${S.room===r.id?' cur':''}" data-act="room" data-room="${r.id}">
+      <div class="rl"><span>${r.ic} ${r.n} <span class="here">${av} أنت هنا</span></span><small>${n}/${ds.length} آمن</small></div>
+      <div class="devs">${ds.map(tile).join('')}</div></div>`}).join('');
+  const chips=ROOMS.map(r=>{const ds=DEVICES.filter(d=>d.room===r.id),left=ds.filter(d=>S.dev[d.id].status!=='secure').length;
+    return `<button class="chip" data-act="room" data-room="${r.id}" aria-pressed="${S.room===r.id}">${r.ic} ${r.n} <small class="${left?'':'ok'}">${left?left+' للفحص':'✓ تم'}</small></button>`}).join('');
+  $('#p-home').innerHTML=`
+   <div class="locbar" role="group" aria-label="الغرف">${chips}</div>
+   ${S.guide===false?'':`<div class="guide"><span style="font-size:32px" aria-hidden="true">🧭</span><p>${S.role==='kid'?'اضغط على أي جهاز لتفحصه. بعض الأجهزة فيها خطر وبعضها سليم تمامًا. أنت من يقرر!':'افحص كل جهاز متصل، اكتشف الإعدادات الضعيفة وأصلحها. بعض الأجهزة قد تكون سليمة بالفعل.'}</p><button class="btn ghost sm" data-act="hideguide">فهمت</button></div>`}
+   <div class="legend" aria-label="دليل الحالات"><span class="badge b-vuln">${BADGE.vuln} · Vulnerable</span><span class="badge b-review">${BADGE.review} · Needs Review</span><span class="badge b-secure">${BADGE.secure} · Secure</span></div>
+   <div class="house"><div class="roof"><div class="chim"></div><div class="shieldbox">${shieldSVG()}<span>درع المنزل</span></div></div>
+   <div class="hbody">${rooms}</div><div class="ground"></div></div>`;
+  S.pop=null;
+}
+function renderDevices(){
+  $('#p-devices').innerHTML=`<div class="pagehead"><h2>أجهزتي</h2><p>كل الأجهزة المتصلة في منزلك وحالتها الأمنية.</p></div><div class="grid2">`+
+  DEVICES.map(d=>{const st=S.dev[d.id].status,n=tasks(d.id).length,i=S.dev[d.id].idx,r=ROOMS.find(x=>x.id===d.room);
+   return `<div class="card dcard"><span class="ic" aria-hidden="true" style="--tint:var(--bg2)">${icon(d.id)}</span><div><h3>${d.n}</h3><span class="badge b-${st}">${BADGE[st]}</span></div>
+   <p>${r.ic} ${r.n} · ${d.tip}</p><p>المهام المنجزة: ${i}/${n}</p><button class="btn sm ${st==='secure'?'ghost':''}" data-act="dev" data-id="${d.id}">${st==='secure'?'مراجعة':'افحص'} ${esc(d.n)}</button></div>`}).join('')+`</div>`;
+}
+function renderChallenges(){
+  let h=`<div class="pagehead"><h2>التحديات</h2><p>أنجزت ${S.done} من ${totalTasks()}. كل تحدٍّ يأتي من جهاز في منزلك.</p></div><div class="chal">`;
+  DEVICES.forEach(d=>{tasks(d.id).forEach((t,i)=>{const done=i<S.dev[d.id].idx;
+    h+=`<div class="crow ${done?'done':''}"><span class="tick" aria-hidden="true">${done?'✓':'•'}</span><div><b>${d.n}: ${t.decoy?'فحص الجهاز':t.title}</b><small>${t.topic} · +${t.pts} نقطة ${done?'· تم':''}</small></div>${done?'<span class="badge b-secure">تم</span>':`<button class="btn sm ghost" data-act="dev" data-id="${d.id}">افتح</button>`}</div>`})});
+  [0,1].forEach(i=>{const done=S.atkDone[i]&&S.blocked>i;
+    h+=`<div class="crow atk ${done?'done':''}"><span class="tick" aria-hidden="true">${done?'✓':'⚡'}</span><div><b>هجوم سيبراني ${i+1}</b><small>يظهر بعد تأمين ${ATK_AT[i]} أجهزة · +20 نقطة</small></div>${done?'<span class="badge b-secure">تم صده</span>':'<span class="badge b-review">مقفل</span>'}</div>`});
+  $('#p-challenges').innerHTML=h+`</div>`;
+}
+
+/* ---------- الخريطة والمصمم ---------- */
+function defaultPlan(){
+  const ids=[['phone',40,70],['console',150,70],['laptop',340,70],['printer',450,70],['fridge',640,70],['iot_hub',750,70],['camera',40,350],['doorbell',150,350],['lock',260,350],['wifi',470,350],['smart_tv',580,350],['speaker',690,350]];
+  const flat=CATALOG.flatMap(c=>c.items);
+  const devs=ids.map(([id,x,y])=>{const c=flat.find(i=>i.id===id);return {id:'d_'+id,devId:id,e:c.e,ar:c.ar,x,y,w:80,h:80,status:c.s,note:''}});
+  const labels=[['غرفة الطفل',40,20],['المكتب',340,20],['المطبخ',640,20],['مدخل المنزل',40,300],['غرفة المعيشة',470,300]].map((l,i)=>({id:'l'+i,text:l[0],x:l[1],y:l[2]}));
+  return {devs,labels};
+}
+function loadPlan(){
+  const key=S.role==='parent'?S.key:DB.latest;const d=key&&DB.designs[key];
+  const base=d?JSON.parse(JSON.stringify(d)):defaultPlan();
+  P={devs:base.devs,labels:base.labels,sel:null,grid:false,edit:false,owner:d?d.owner:null,scale:1};
+}
+function gameStatusOf(it){
+  const g=PLAN_MAP[it.devId];
+  if(g&&S.dev[g]){const st=S.dev[g].status;return st==='secure'?'safe':st==='vuln'?'danger':'warning'}
+  return it.status;
+}
+function renderPlan(){
+  if(!P)loadPlan();
+  const parent=S.role==='parent';
+  const src=parent?'تصميمك':(P.owner?'تصميم ولي الأمر «'+esc(P.owner)+'»':'خريطة افتراضية (لم يحفظ ولي الأمر تصميمًا بعد)');
+  let h=`<div class="pagehead"><h2>${parent?'مصمم المنزل':'خريطة البيت'}</h2><p>${parent?'ولي الأمر يصمم مكان الأجهزة، والطفل يرى تصميمك على خريطته. الألوان تتغير تلقائيًا عندما تُؤمَّن الأجهزة.':'هذه خريطة بيتك. اضغط على أي جهاز لتفحصه. المصدر: '+src+'.'}</p></div>`;
+  if(parent){
+    h+=`<div class="ptool"><button class="btn sm ${P.edit?'':'ghost'}" data-act="pedit">${P.edit?'👁️ وضع العرض':'✏️ تعديل التصميم'}</button>`;
+    if(P.edit)h+=`<button class="btn sm ghost" data-act="plabel">🏷️ تسمية غرفة</button><button class="btn sm ghost" data-act="pgrid">⊞ شبكة</button><button class="btn sm ghost" data-act="pclear">${confirmKey==='clear'?'تأكيد المسح؟':'🗑️ مسح الكل'}</button><button class="btn sm ghost" data-act="pexport">📤 تصدير</button><button class="btn sm ghost" data-act="pimport">📥 استيراد</button><button class="btn sm" data-act="psave">💾 حفظ التصميم</button>`;
+    h+=`</div>`;
+  }
+  h+=`<div class="plan-lay ${P.edit?'':'view'}">`;
+  if(P.edit){
+    h+=`<aside class="pal" aria-label="مكتبة الأجهزة"><h3 style="font-size:17px">مكتبة الأجهزة</h3><p class="notes" style="margin:0">اضغط أو اسحب الجهاز إلى الخريطة.</p>`+
+    CATALOG.map(c=>`<h4>${c.cat}</h4><div class="items">`+c.items.map(i=>`<button class="pi" data-pal="${i.id}"><span aria-hidden="true">${i.e}</span> ${i.ar}</button>`).join('')+`</div>`).join('')+`</aside>`;
+  }
+  h+=`<div><div class="plan-out" id="planOut"><div class="plan-in${P.grid?' grid':''}" id="planIn"></div></div><div id="inspBox"></div>
+   <div class="legend" style="margin-top:10px"><span class="badge b-vuln">✖ غير آمن</span><span class="badge b-review">! يحتاج فحص</span><span class="badge b-secure">✓ آمن</span></div></div></div>`;
+  $('#p-plan').innerHTML=h;
+  renderCanvas();fitPlan();renderInsp();
+}
+function renderCanvas(){
+  const c=$('#planIn');if(!c)return;
+  const sym={danger:'✖',warning:'!',safe:'✓'};
+  c.innerHTML=P.devs.map(d=>{const st=gameStatusOf(d),g=PLAN_MAP[d.devId];
+    const inner=g?icon(g):d.e;
+    return `<div class="pd st-${st}${P.edit?' edit':''}${P.sel===d.id?' sel':''}" data-pid="${d.id}" role="button" tabindex="0" aria-label="${esc(d.ar)}" style="left:${d.x}px;top:${d.y}px;width:${d.w}px;height:${d.h}px">${inner}<span class="dot" aria-hidden="true">${sym[st]}</span><span class="lb2">${esc(d.note||d.ar)}</span></div>`}).join('')+
+   P.labels.map(l=>`<div class="rl-lbl${P.edit?' edit':''}${P.sel===l.id?' sel':''}" data-pid="${l.id}" style="left:${l.x}px;top:${l.y}px">${esc(l.text)}</div>`).join('');
+}
+function fitPlan(){const o=$('#planOut'),i=$('#planIn');if(!o||!i)return;P.scale=o.clientWidth/900;i.style.transform=`scale(${P.scale})`}
+function renderInsp(){
+  const b=$('#inspBox');if(!b)return;
+  if(!P.edit||!P.sel){b.innerHTML=P.edit?'<div class="insp"><span class="notes">اختر جهازًا أو تسمية على الخريطة لتعديلها.</span></div>':'';return}
+  const d=P.devs.find(x=>x.id===P.sel),l=P.labels.find(x=>x.id===P.sel);
+  if(d){const g=PLAN_MAP[d.devId];
+    b.innerHTML=`<div class="insp"><div class="r"><b>${esc(d.ar)}</b>${g?`<button class="btn sm ghost" data-act="dev" data-id="${g}">افتح الجهاز في اللعبة</button>`:''}</div>
+    ${g?'<div class="notes">حالة هذا الجهاز تتبع تقدمك في اللعبة تلقائيًا.</div>':`<div class="r">الحالة: ${[['danger','✖ غير آمن'],['warning','! يحتاج فحص'],['safe','✓ آمن']].map(s=>`<button class="sopt ${d.status===s[0]?'on':''}" data-act="pstatus" data-s="${s[0]}">${s[1]}</button>`).join('')}</div>`}
+    <div class="r"><label for="psz">الحجم</label><input id="psz" type="range" min="50" max="140" value="${d.w}"><input id="pnote" type="text" placeholder="ملاحظة أو غرفة (اختياري)" value="${esc(d.note||'')}" maxlength="20"><button class="btn sm danger" data-act="pdel">حذف</button></div></div>`}
+  else if(l){b.innerHTML=`<div class="insp"><div class="r"><label for="ptxt">اسم الغرفة</label><input id="ptxt" type="text" value="${esc(l.text)}" maxlength="20"><button class="btn sm danger" data-act="pdel">حذف</button></div></div>`}
+}
+function addPlanDev(id,x,y){
+  const c=CATALOG.flatMap(k=>k.items).find(i=>i.id===id);if(!c)return;
+  const it={id:'d'+Date.now()+(Math.random()*999|0),devId:id,e:c.e,ar:c.ar,x:Math.round(x),y:Math.round(y),w:80,h:80,status:c.s,note:''};
+  it.x=Math.max(0,Math.min(820,it.x));it.y=Math.max(0,Math.min(470,it.y));
+  P.devs.push(it);P.sel=it.id;renderCanvas();renderInsp();
+}
+async function fetchPlanRemote(){
+  if(!S)return;
+  const q=S.role==='parent'?`designs?owner=eq.${encodeURIComponent(S.key)}&select=owner,design`:`designs?select=owner,design&order=updated_at.desc&limit=1`;
+  const r=await sb(q);
+  if(r&&r[0]&&r[0].design&&Array.isArray(r[0].design.devs)&&P&&!P.edit&&S&&S.page==='plan'){
+    P.devs=r[0].design.devs;P.labels=r[0].design.labels||[];P.owner=r[0].design.ownerNick||r[0].owner;renderPlan();
+  }
+}
+function planSave(){
+  DB.designs[S.key]={owner:S.nick,ts:Date.now(),devs:P.devs,labels:P.labels};DB.latest=S.key;dbSave();
+  toast('جارٍ حفظ التصميم…');
+  sb('designs?on_conflict=owner',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({owner:S.key,design:{devs:P.devs,labels:P.labels,ownerNick:S.nick},updated_at:new Date().toISOString()})}).then(r=>toast(r===undefined?'تم الحفظ على الجهاز فقط (لا يوجد اتصال)':'تم حفظ التصميم. سيراه الطفل على خريطته من أي جهاز.'));
+}
+function planJSON(){return JSON.stringify({devs:P.devs,labels:P.labels},null,1)}
+
+/* ---------- الترتيب / لوحة الصدارة ---------- */
+const SEEDS=[['حارس_البيت','parent',.97,480],['نجمة_الأمان','kid',.93,520],['صقر_الشبكة','kid',.85,610],['أبو_سالم','parent',.78,700],['بطل_الحماية','kid',.7,655],['ريم_الذكية','parent',.6,820],['ظلال_آمنة','kid',.5,900],['نور_السيبراني','kid',.38,960]];
+function lbRows(){
+  const rows=SEEDS.map(s=>({n:s[0],role:s[1],score:Math.round(maxScore(s[1])*s[2]/5)*5,lvl:Math.round(s[2]*100),time:s[3],me:0}));
+  const seen=new Set();
+  if(REMOTE_LB)REMOTE_LB.forEach(r=>{seen.add(r.nick);const me=S&&r.nick===S.key;
+    rows.push(me?{n:S.nick,role:S.role,score:S.score,lvl:level(),time:S.time,me:1}:{n:r.display||r.nick,role:r.role,score:r.score||0,lvl:r.security_pct||0,time:r.time_taken||0,me:0})});
+  Object.values(DB.users).forEach(u=>{if(seen.has(u.state.key))return;const me=S&&u.state.key===S.key,st=me?S:u.state;
+    rows.push({n:u.nick,role:u.role,score:st.score,lvl:levelOfState(st),time:st.time,me:me?1:0})});
+  rows.forEach(r=>r.b=badgeOf(r.score,r.role));
+  rows.sort((a,b)=>b.score-a.score||a.time-b.time);
+  rows.forEach((r,i)=>r.rank=i+1);
+  return rows;
+}
+async function refreshBoard(){
+  const r=await sb('players?select=nick,role,score,security_pct,time_taken,display:state->>nick&order=score.desc&limit=100');
+  if(r){REMOTE_LB=r;if(S&&S.page==='board')renderBoard()}
+}
+function renderBoard(){
+  let rows=lbRows();if(lbFilter!=='all')rows=rows.filter(r=>r.role===lbFilter);
+  const rk=rows.map((r,i)=>({...r,rank:i+1}));
+  let top=rk.slice(0,10);const me=rk.find(r=>r.me);if(me&&!top.includes(me))top=top.concat(me);
+  $('#p-board').innerHTML=`<div class="pagehead"><h2>لوحة الصدارة</h2><p>اللاعبون التجريبيون وهميون. باقي اللاعبين حقيقيون من كل الأجهزة، ويظهر لقبهم فقط.</p></div>
+  <div class="ftabs" role="group" aria-label="تصفية">${[['all','الكل'],['kid','🧒 الأطفال'],['parent','🧑 أولياء الأمور']].map(f=>`<button class="atab" data-act="lbf" data-f="${f[0]}" aria-pressed="${lbFilter===f[0]}">${f[1]}</button>`).join('')}</div>
+  <table class="lb"><thead><tr><th>الترتيب</th><th>اللقب</th><th>النقاط</th><th>مستوى الأمان</th><th>الوسام</th><th>الوقت</th></tr></thead><tbody>`+
+  top.map(r=>`<tr class="${r.me?'me':''}"><td>${r.rank<=3?['🥇','🥈','🥉'][r.rank-1]:r.rank}</td><td>${r.role==='kid'?'🧒':'🧑'} ${esc(r.n)}${r.me?' (أنت)':''}</td><td>${r.score}</td><td><span class="mini"><i style="width:${r.lvl}%"></i></span>${r.lvl}%</td><td>${r.b.e} ${r.b.n}</td><td>${fmtTime(r.time)}</td></tr>`).join('')+`</tbody></table>`;
+}
+
+/* ---------- التقرير والشهادة ---------- */
+function renderReport(){
+  const l=level(),sec=secured(),acc=S.correct+S.mistakes?Math.round(100*S.correct/(S.correct+S.mistakes)):0;
+  const title=l>=90?'حارس سيبراني':l>=60?'مدافع المنزل':l>=30?'مستكشف الأمان':'محقق مبتدئ';
+  const b=badgeOf(S.score,S.role);
+  const rank=lbRows().find(r=>r.me);
+  const miss=TOPICS[S.role].filter(t=>!hasTopic(t)),kid=S.role==='kid';
+  let msg=l>=100?(kid?`رائع يا ${esc(S.nick)}! حميت البيت كله وصددت كل التهديدات. استمر في تطبيق ما تعلمته: كلمات مرور خاصة، لا تشارك رمز OTP، وأخبر شخصًا كبيرًا عندما يبدو شيء غريبًا.`:`ممتاز يا ${esc(S.nick)}. كل الأجهزة مؤمّنة وتم صد الهجومين. واصل مراجعة الراوتر والحسابات والأجهزة الذكية بانتظام.`)
+   :l>=60?`تقدم رائع يا ${esc(S.nick)}! معظم بيتك محمي. ${miss.length?'للخطوة التالية تدرّب على: '+miss.slice(0,2).join(' و')+'.':''}`
+   :`بداية جيدة يا ${esc(S.nick)}! ما زال في بيتك ${DEVICES.length-sec} أجهزة تحتاج فحصًا. ارجع إلى البيت وواصل الاستكشاف. ${miss.length?'جرّب: '+miss[0]+'.':''}`;
+  if(S.mistakes>0&&l>=60)msg+=` الأخطاء جزء من التعلم: ${S.mistakes} اليوم، وكل واحد منها علّمك شيئًا.`;
+  const rooms=ROOMS.map(r=>{const ds=DEVICES.filter(d=>d.room===r.id),n=ds.filter(d=>S.dev[d.id].status==='secure').length,p=100*n/ds.length;return `<div><span>${r.ic} ${r.n}</span><span class="bar"><i style="width:${p}%;--bw:${10000/Math.max(1,p)}%"></i></span><span>${n}/${ds.length}</span></div>`}).join('');
+  $('#p-report').innerHTML=`<div class="rep"><div class="rep-h"><div><h2>التقرير النهائي للأمن السيبراني</h2><p style="margin:2px 0 0;color:var(--muted);font-weight:700">${kid?'🧒 الطفل السيبراني':'🧑 ولي الأمر'} · ${esc(S.nick)}${sec<DEVICES.length?' · قيد التقدم':''}</p></div><span class="rank-t">${b.e} ${title}</span></div>
+   <div class="kpis"><div class="kpi"><b>${l}%</b><span>مستوى الأمان</span></div><div class="kpi"><b>${sec} / ${DEVICES.length}</b><span>أجهزة مؤمّنة</span></div><div class="kpi"><b>${S.score}</b><span>النقاط</span></div><div class="kpi"><b>${S.done}/${totalTasks()}</b><span>تحديات مكتملة</span></div><div class="kpi"><b>${S.correct}</b><span>قرارات صحيحة</span></div><div class="kpi"><b>${S.mistakes}</b><span>أخطاء (دقة ${acc}%)</span></div><div class="kpi"><b>${fmtTime(S.time)}</b><span>الوقت المستغرق</span></div><div class="kpi"><b>#${rank?rank.rank:'-'}</b><span>الترتيب · وسام ${b.n}</span></div></div>
+   <h3 style="margin-bottom:6px">الأمان حسب الغرفة</h3><div class="rbars">${rooms}</div>
+   <h3 style="margin-top:14px">مواضيع الأمن السيبراني</h3><ul class="topics">${TOPICS[S.role].map(t=>hasTopic(t)?`<li class="y"><span aria-hidden="true">✓</span> ${t}<span class="sr"> مكتمل</span></li>`:`<li class="n"><span aria-hidden="true">○</span> ${t}<span class="sr"> لم يكتمل</span></li>`).join('')}</ul>
+   <div class="msgbox">${msg}</div>
+   <div class="certbox"><h3 style="margin-bottom:8px">🎓 شهادتك</h3><canvas id="cert" width="1200" height="800" aria-label="شهادة إتمام التوعية السيبرانية"></canvas></div>
+   <div class="mfoot noprint"><button class="btn" data-act="dlcert">⬇️ تنزيل الشهادة (PNG)</button><button class="btn ghost" data-act="nav" data-p="board">🏆 لوحة الصدارة</button><button class="btn ghost" data-act="print">🖨️ طباعة التقرير</button><button class="btn ghost" data-act="restartp">${confirmKey==='restart'?'تأكيد: مسح تقدمي؟':'↺ العب من جديد'}</button></div></div>`;
+  const draw=()=>drawCert($('#cert'));
+  if(document.fonts&&document.fonts.load){document.fonts.load('800 40px Cairo').then(draw).catch(draw)}else draw();
+}
+function drawCert(cv){
+  if(!cv)return;const c=cv.getContext('2d'),W=1200,H=800,b=badgeOf(S.score,S.role),done=secured()===DEVICES.length,f='Cairo,Tahoma,sans-serif';
+  const g=c.createLinearGradient(0,0,W,H);g.addColorStop(0,'#F4FBFA');g.addColorStop(1,'#E2F1FF');c.fillStyle=g;c.fillRect(0,0,W,H);
+  c.strokeStyle='#12324A';c.lineWidth=10;c.strokeRect(28,28,W-56,H-56);c.strokeStyle=b.c;c.lineWidth=6;c.strokeRect(48,48,W-96,H-96);
+  c.direction='rtl';c.textAlign='center';
+  c.fillStyle='#12324A';c.font='800 30px '+f;c.fillText('Cyber Safe Home · البيت الذكي الآمن',W/2,120);
+  c.font='800 64px '+f;c.fillStyle='#0B7F8A';c.fillText(done?'شهادة إتمام التوعية السيبرانية':'شهادة مشاركة في التوعية السيبرانية',W/2,215);
+  c.fillStyle='#48637A';c.font='700 32px '+f;c.fillText('تُمنح هذه الشهادة إلى',W/2,290);
+  c.fillStyle='#12324A';c.font='800 84px '+f;c.fillText(S.nick,W/2,392);
+  c.fillStyle='#48637A';c.font='700 30px '+f;c.fillText((S.role==='kid'?'الطفل السيبراني':'ولي الأمر')+' · '+(done?'لتأمين المنزل الذكي بالكامل':'لمشاركته في تأمين المنزل الذكي'),W/2,450);
+  c.fillStyle='#12324A';c.font='800 34px '+f;c.fillText(`مستوى الأمان ${level()}%   |   ${secured()} من ${DEVICES.length} أجهزة   |   ${S.score} نقطة`,W/2,525);
+  c.beginPath();c.arc(W/2,640,62,0,Math.PI*2);c.fillStyle=b.c;c.fill();c.lineWidth=6;c.strokeStyle='#12324A';c.stroke();
+  c.fillStyle='#12324A';c.font='800 26px '+f;c.fillText('وسام',W/2,632);c.font='800 34px '+f;c.fillText(b.n,W/2,672);
+  c.font='700 26px '+f;c.fillStyle='#48637A';c.textAlign='right';c.fillText(new Date().toLocaleDateString('ar-EG',{year:'numeric',month:'long',day:'numeric'}),W-110,700);
+  c.textAlign='left';c.fillText('الوقت: '+fmtTime(S.time),110,700);
+}
+
+/* ---------- النافذة ---------- */
+function openOv(){lastFocus=document.activeElement;$('#ov').hidden=false;$('#sheet').className='sheet';$('#sheet').focus()}
+function closeOv(){$('#ov').hidden=true;$('#sheet').className='sheet';if(atk&&atk.timer)clearInterval(atk.timer);ui=null;atk=null;if(lastFocus&&lastFocus.focus)try{lastFocus.focus()}catch(e){}}
+function showHTML(s){
+  if(s.kind==='msg')return `<div class="phoneMsg"><div class="from">${s.from}</div><p dir="auto">${s.text}</p></div>`;
+  if(s.kind==='story')return `<div class="story"><b>📖 الموقف</b><p dir="auto">${esc(s.text)}</p></div>`;
+  return `<div class="scr"><h4>${s.title}</h4>${s.rows.map(r=>`<div class="srow ${r[2]}"><span>${r[0]}</span><b>${r[1]}</b><span aria-hidden="true">${r[2]==='bad'?'⚠':r[2]==='good'?'✓':''}</span>${r[2]?`<span class="sr">${r[2]==='bad'?'مشكلة':'سليم'}</span>`:''}</div>`).join('')}</div>`;
+}
+function head(id){const D=dev(id),st=S.dev[id].status;return `<div class="mhead"><span class="mic" aria-hidden="true">${icon(id)}</span><div><h2 id="mt">${D.n}</h2><span class="badge b-${st}">${BADGE[st]}</span></div><button class="x" data-act="close" aria-label="إغلاق">✕</button></div>`}
+function stepsHTML(id){const n=tasks(id).length,i=S.dev[id].idx;if(n<2)return '';return `<div class="steps" aria-label="المهمة ${i+1} من ${n}">${tasks(id).map((_,k)=>`<i class="${k<i?'d':k===i?'c':''}"></i>`).join('')}<span>المهمة ${Math.min(i+1,n)} من ${n}</span></div>`}
+function openDevice(id){
+  ui={id,stage:'',sel:[],warn:'',tok:Math.random(),r:{pw:'12345678',enc:'WEP',wps:true,ad:'admin'},order:null};
+  openOv();const d=S.dev[id];
+  if(d.status==='secure'){ui.stage='done';return renderModal()}
+  if(!d.scanned){ui.stage='scan';renderModal();const tk=ui.tok;
+    setTimeout(()=>{if(!ui||ui.tok!==tk)return;d.scanned=true;if(!tasks(id)[0].decoy)d.status='vuln';persist();renderAll();ui.stage='task';renderModal()},1150);
+  }else{ui.stage='task';renderModal()}
+}
+function renderModal(){
+  if(!ui)return;const id=ui.id,D=dev(id),d=S.dev[id],sh=$('#sheet');let h=head(id);
+  if(ui.stage==='scan'){h+=`<div class="scan"><div class="radar" aria-hidden="true"></div><h3>جارٍ فحص ${D.n}…</h3><div class="sbar"><i></i></div><p style="margin:0;color:var(--muted);font-weight:700">نراجع كلمات المرور والتحديثات والإعدادات</p></div>`}
+  else if(ui.stage==='done'){
+    h+=`<div class="okmark" aria-hidden="true">✓</div><h3 class="center">${D.n} آمن!</h3><p class="center" style="color:var(--muted);font-weight:700">المواضيع التي تدربت عليها هنا:</p><p class="center" style="font-weight:800">${[...new Set(tasks(id).map(t=>t.topic))].join(' · ')}</p><div class="mfoot" style="justify-content:center"><button class="btn" data-act="close">العودة إلى البيت</button></div>`}
+  else if(ui.stage==='ok'){
+    const t=tasks(id)[d.idx-1];
+    h+=stepsHTML(id)+`<div class="okmark" aria-hidden="true">✓</div><div class="fb good"><h3>${ui.res.last?(t.decoy?'تم وضعه في القائمة الآمنة!':'أصبح '+D.n+' آمنًا!'):'إجابة صحيحة!'} <span class="ptsgain">+${ui.res.pts} نقطة</span></h3><p dir="auto">${t.ok}</p></div>`;
+    if(t.kind==='router')h+=`<div class="scr"><h4>إعدادات الراوتر الجديدة</h4><div class="srow good"><span>كلمة مرور الواي فاي</span><b>قوية وفريدة</b><span>✓</span></div><div class="srow good"><span>التشفير</span><b>WPA3</b><span>✓</span></div><div class="srow good"><span>WPS</span><b>OFF</b><span>✓</span></div><div class="srow good"><span>كلمة مرور الإدارة</span><b>قوية</b><span>✓</span></div></div>`;
+    h+=`<div class="mfoot">${ui.res.last?`<button class="btn" data-act="close">العودة إلى البيت</button>`:`<button class="btn" data-act="next">المهمة التالية</button>`}</div>`}
+  else{
+    const t=tasks(id)[d.idx];
+    if(!ui.order||ui.orderIdx!==d.idx){ui.order=shuffle(t.opts?t.opts.length:0);ui.orderIdx=d.idx}
+    h+=stepsHTML(id)+(t.decoy?`<div class="found neu"><span aria-hidden="true">🔍</span> انتهى الفحص: لا شيء يبدو خاطئًا. تأكد بنفسك.</div>`:`<div class="found bad"><span aria-hidden="true">🚨</span> وُجدت مشكلة: ${t.title}</div>`);
+    if(ui.warn)h+=`<div class="fb warn" role="alert">${ui.warn}</div>`;
+    if(t.kind==='router'){h+=routerHTML(t)}
+    else{
+      h+=showHTML(t.show)+`<h3 class="q" dir="auto">${t.q}${t.multi?' <small style="font-size:15px;color:var(--muted)">(اختر كل ما ينطبق)</small>':''}</h3><div class="opts">`+
+      ui.order.map((i,pos)=>{const o=t.opts[i],w=d.wrong.includes(i),sel=ui.sel.includes(i);
+        return `<button class="opt${w?' wrong':''}" data-act="opt" data-i="${i}" ${t.multi?`aria-pressed="${sel}"`:''} ${w?'disabled':''}><span class="k" aria-hidden="true">${w?'✕':t.multi?(sel?'✓':''):KEYS[pos]}</span><span dir="auto">${esc(o[0])}${w?`<small>${esc(o[2])}</small>`:''}</span></button>`}).join('')+`</div>`;
+      if(t.multi)h+=`<div class="mfoot"><button class="btn" data-act="check" ${ui.sel.length?'':'disabled'}>تحقق من إجابتي</button></div>`;
+    }
+  }
+  sh.innerHTML=h;
+  if(ui.stage==='task'&&tasks(id)[d.idx].kind==='router')meters();
+}
+const CHK=['12 حرفًا أو أكثر','حرف كبير','حرف صغير','رقم','رمز','ليست كلمة شائعة'];
+function pwChecks(p){return[p.length>=12,/[A-Z]/.test(p),/[a-z]/.test(p),/\d/.test(p),/[^A-Za-z0-9]/.test(p),!['12345678','password','admin','123456789','qwerty123','11111111'].includes(p.toLowerCase())&&!/^(.)\1+$/.test(p)]}
+function pwOK(p){return pwChecks(p).every(Boolean)}
+function meterHTML(p){const c=pwChecks(p),n=c.filter(Boolean).length,lab=n===6?'قوية':n>=4?'جيدة':'ضعيفة',col=n===6?'#3DDC84':n>=4?'#FFB347':'#FF6B76',miss=c.map((x,i)=>x?null:CHK[i]).filter(Boolean);
+  return `<div class="mb"><i style="width:${n/6*100}%;background:${col}"></i></div>${lab}${miss.length?' · تحتاج: '+miss.join('، '):' ✓'}`}
+function meters(){const r=ui.r,a=$('#m-pw'),b=$('#m-ad');if(a)a.innerHTML=meterHTML(r.pw);if(b)b.innerHTML=meterHTML(r.ad)}
+function routerHTML(t){const r=ui.r;return showHTML(t.show)+`<h3 class="q">${t.q}</h3><div class="scr rt"><h4>عدّل إعدادات الراوتر</h4>
+  <label>كلمة مرور الواي فاي<input id="r-pw" value="${esc(r.pw)}" autocomplete="off" spellcheck="false"></label><div class="meter" id="m-pw"></div>
+  <label>التشفير<select id="r-enc">${['WEP','WPA2','WPA3'].map(x=>`<option ${r.enc===x?'selected':''}>${x}</option>`).join('')}</select></label>
+  <div class="tgl"><span>WPS (زر الاتصال السريع)</span><button class="sw ${r.wps?'on':''}" data-act="wps" role="switch" aria-checked="${r.wps}">${r.wps?'ON':'OFF'}</button></div>
+  <label>كلمة مرور إدارة الراوتر<input id="r-ad" value="${esc(r.ad)}" autocomplete="off" spellcheck="false"></label><div class="meter" id="m-ad"></div>
+  <button class="btn sm ghost" data-act="suggest">✨ اقترح كلمات مرور قوية</button>
+  <button class="btn go" data-act="secure">SECURE ROUTER</button></div>`}
+function suggest(){const W=['Blue','Rocket','Maple','Tiger','Cloud','Panda','River','Comet','Falcon','Lemon'],Y=['#','!','$','%','&'];
+  const g=()=>W[Math.random()*W.length|0]+Y[Math.random()*5|0]+W[Math.random()*W.length|0]+(10+Math.random()*89|0)+Y[Math.random()*5|0];
+  let a=g(),b=g();while(b===a)b=g();ui.r.pw=a;ui.r.ad=b+'x'}
+
+function award(t){
+  const d=S.dev[ui.id],pts=d.tries?Math.round(t.pts/2):t.pts;
+  S.score+=pts;S.correct++;S.done++;if(!hasTopic(t.topic))S.topics.push(t.topic);d.tries=0;d.wrong=[];d.idx++;ui.sel=[];ui.warn='';ui.order=null;
+  const last=d.idx>=tasks(ui.id).length;
+  if(last){d.status='secure';S.pop=ui.id}
+  ui.res={pts,last};ui.stage='ok';persist();bump();renderAll();renderModal();
+}
+function miss(msg){const d=S.dev[ui.id];S.mistakes++;d.tries++;ui.warn=msg;persist();renderTop();renderModal();$('#live').textContent='ليست صحيحة. حاول مرة أخرى.'}
+function answerSingle(i){const t=tasks(ui.id)[S.dev[ui.id].idx],o=t.opts[i];
+  if(o[1])return award(t);
+  S.dev[ui.id].wrong.push(i);miss(`<b>ليست صحيحة.</b> ${esc(o[2])} جرّب خيارًا آخر. لا تُخصم منك نقاط!`)}
+function answerMulti(){const t=tasks(ui.id)[S.dev[ui.id].idx],good=t.opts.map((o,i)=>o[1]?i:-1).filter(i=>i>=0),sel=ui.sel;
+  const wrong=sel.filter(i=>!good.includes(i)),missed=good.filter(i=>!sel.includes(i));
+  if(!wrong.length&&!missed.length)return award(t);
+  let m=`<b>اقتربت!</b>`;
+  if(wrong.length)m+=`<ul>${wrong.map(i=>`<li><b>${esc(t.opts[i][0])}</b>: ${esc(t.opts[i][2])}</li>`).join('')}</ul>`;
+  if(missed.length)m+=`<p>فاتك ${missed.length} من الخيارات الصحيحة. انظر مرة أخرى!</p>`;
+  miss(m)}
+function answerRouter(){const r=ui.r,t=tasks(ui.id)[S.dev[ui.id].idx],is=[];
+  if(!pwOK(r.pw))is.push('كلمة مرور الواي فاي ضعيفة. استخدم 12 حرفًا أو أكثر مع حروف كبيرة وصغيرة وأرقام ورمز.');
+  if(r.enc==='WEP')is.push('WEP قديم جدًا وسهل الكسر. اختر WPA3.');else if(r.enc==='WPA2')is.push('WPA2 مقبول، لكن WPA3 هو الأقوى. اختر WPA3.');
+  if(r.wps)is.push('WPS مفعّل. أوقفه (OFF) لأن المهاجمين قد يستغلونه للدخول إلى شبكتك.');
+  if(!pwOK(r.ad)||r.ad===r.pw)is.push('كلمة مرور إدارة الراوتر يجب أن تكون قوية ومختلفة عن كلمة الواي فاي.');
+  if(!is.length)return award(t);
+  miss(`<b>الراوتر ليس آمنًا بعد:</b><ul>${is.map(x=>`<li>${x}</li>`).join('')}</ul>`)}
+
+/* ---------- الهجوم ---------- */
+function fireAttack(){
+  for(let i=0;i<2;i++){if(!S.atkDone[i]&&secured()>=ATK_AT[i]){S.atkDone[i]=true;persist();setTimeout(()=>openAttack(i),500);return true}}
+  return false;
+}
+function openAttack(i){
+  const a=ATK[S.role][i];atk={i,a,start:Date.now(),wrong:[],won:false,timer:null,order:shuffle(a.opts.length)};
+  lastFocus=document.activeElement;$('#ov').hidden=false;$('#sheet').className='sheet atk';$('#sheet').focus();renderAttack();
+  atk.timer=setInterval(()=>{const b=$('#tbar');if(!b||!atk||atk.won){clearInterval(atk&&atk.timer);return}
+    const left=Math.max(0,1-(Date.now()-atk.start)/20000);b.style.width=left*100+'%';if(left===0){const l=$('#tlab');if(l)l.textContent='انتهى وقت المكافأة، لكن يمكنك الإجابة.'}},100);
+}
+function renderAttack(){
+  const {a,i}=atk;
+  let h=`<div class="atk-h"><div class="pulse" aria-hidden="true">⚡</div><div><h2 id="mt">هجوم سيبراني!</h2><p>محاكاة ${i+1} من 2 · هذا تدريب ولا أحد في خطر</p></div></div>`;
+  if(atk.won){
+    h+=`<div class="stamp" role="status">THREAT BLOCKED</div><div class="fb good"><h3>استجابة رائعة! <span class="ptsgain">+${atk.pts} نقطة</span></h3><p>${a.ok}</p><p>مستوى الأمان +${ATK_PCT}%</p></div><div class="mfoot"><button class="btn" data-act="atkclose">العودة إلى البيت</button></div>`;
+  }else{
+    h+=`<h3 style="font-size:23px;margin:8px 0">${a.t}</h3><div class="phoneMsg"><p dir="auto">${a.s}</p></div><div class="tbar"><i id="tbar"></i></div><div id="tlab" style="font-size:14px;font-weight:700;color:#B8D2F0;margin-bottom:8px">أجب خلال 20 ثانية لتحصل على +10 نقاط مكافأة.</div>`;
+    if(atk.warn)h+=`<div class="fb warn" role="alert">${atk.warn}</div>`;
+    h+=`<div class="opts">`+atk.order.map((k,pos)=>{const o=a.opts[k],w=atk.wrong.includes(k);return `<button class="opt${w?' wrong':''}" data-act="aopt" data-i="${k}" ${w?'disabled':''}><span class="k" aria-hidden="true">${w?'✕':KEYS[pos]}</span><span dir="auto">${esc(o[0])}</span></button>`}).join('')+`</div>`;
+  }
+  $('#sheet').innerHTML=h;
+}
+function answerAttack(k){
+  const o=atk.a.opts[k];
+  if(o[1]){
+    const quick=Date.now()-atk.start<=20000;atk.pts=20+(quick?10:0);atk.won=true;clearInterval(atk.timer);
+    S.score+=atk.pts;S.correct++;S.done++;S.blocked++;if(!hasTopic('التصدي للهجمات'))S.topics.push('التصدي للهجمات');persist();bump();renderAll();renderAttack();
+  }else{atk.wrong.push(k);S.mistakes++;atk.warn=`<b>ليست صحيحة.</b> ${esc(o[2])} حاول مرة أخرى. لا تُخصم منك نقاط!`;persist();renderTop();renderAttack()}
+}
+function afterClose(){
+  if(fireAttack())return;
+  if(secured()===DEVICES.length&&!S.celebrated){S.celebrated=true;persist();setTimeout(celebrate,450)}
+}
+function celebrate(){
+  lastFocus=document.activeElement;$('#ov').hidden=false;$('#sheet').className='sheet';ui={id:null,stage:'cel'};
+  $('#sheet').innerHTML=`<div class="okmark" aria-hidden="true">🏠</div><h2 id="mt" class="center" style="font-size:32px">منزلك محمي بالكامل!</h2><p class="center" style="font-size:18px">كل الأجهزة (${DEVICES.length}) آمنة. مستوى الأمان: <b>${level()}%</b>. النقاط: <b>${S.score}</b>.</p><div class="mfoot" style="justify-content:center"><button class="btn" data-act="toreport">عرض التقرير والشهادة</button><button class="btn ghost" data-act="close">البقاء في البيت</button></div>`;$('#sheet').focus();
+}
+function openLevel(){
+  ui={id:null,stage:'lvl'};lastFocus=document.activeElement;$('#ov').hidden=false;
+  const l=level();
+  $('#sheet').innerHTML=`<div class="mhead"><span class="mic" aria-hidden="true">🛡️</span><div><h2 id="mt">مستوى الأمان: ${l}%</h2><span class="badge b-${l>=67?'secure':l>=34?'review':'vuln'}">${lvlWord(l)}</span></div><button class="x" data-act="close" aria-label="إغلاق">✕</button></div>
+  <p>يكبر درع بيتك كلما أمّنت جهازًا أو صددت هجومًا.</p>
+  <div class="rbars">${ROOMS.map(r=>{const ds=DEVICES.filter(d=>d.room===r.id),n=ds.filter(d=>S.dev[d.id].status==='secure').length,p=100*n/ds.length;return `<div><span>${r.ic} ${r.n}</span><span class="bar"><i style="width:${p}%;--bw:${10000/Math.max(1,p)}%"></i></span><span>${n}/${ds.length}</span></div>`}).join('')}</div>
+  <p class="notes">كل جهاز مؤمّن يضيف ${DEV_PCT}% (${DEVICES.length} جهازًا)، وكل هجوم يُصدّ يضيف ${ATK_PCT}% (هجومان). الأجهزة المؤمّنة: ${secured()} · الهجمات المصدودة: ${S.blocked}.</p>
+  <div class="mfoot"><button class="btn" data-act="close">إغلاق</button></div>`;$('#sheet').focus();
+}
+function jsonModal(mode){
+  ui={id:null,stage:'json'};lastFocus=document.activeElement;$('#ov').hidden=false;
+  $('#sheet').innerHTML=`<div class="mhead"><span class="mic" aria-hidden="true">${mode==='exp'?'📤':'📥'}</span><div><h2 id="mt">${mode==='exp'?'تصدير التصميم':'استيراد تصميم'}</h2></div><button class="x" data-act="close" aria-label="إغلاق">✕</button></div>
+  <p class="notes">${mode==='exp'?'انسخ النص وأرسله أو احفظه.':'الصق نص JSON هنا ثم اضغط استيراد.'}</p>
+  <textarea class="json" id="jtxt" ${mode==='exp'?'readonly':''} aria-label="JSON">${mode==='exp'?esc(planJSON()):''}</textarea><div id="jmsg"></div>
+  <div class="mfoot">${mode==='exp'?'':'<button class="btn" data-act="jimport">استيراد</button>'}<button class="btn ghost" data-act="close">إغلاق</button></div>`;
+  $('#sheet').focus();if(mode==='exp')$('#jtxt').select();
+}
+
+/* ---------- تنقل وتحديث ---------- */
+function renderAll(){renderTop();renderHome();renderDevices();renderChallenges();if(S.page==='report')renderReport();if(S.page==='board')renderBoard();if(S.page==='plan')renderPlan()}
+function nav(p){S.page=p;document.querySelectorAll('.page').forEach(e=>e.classList.toggle('on',e.id==='p-'+p));
+  if(p==='report')renderReport();if(p==='board'){renderBoard();refreshBoard()}if(p==='plan'){loadPlan();renderPlan();fetchPlanRemote()}renderTop();window.scrollTo(0,0);persist()}
+function startGame(st){
+  S=st;S.topics=S.topics||[];DB.users[S.key]={nick:S.nick,role:S.role,state:S};dbSave();
+  document.documentElement.dataset.role=S.role;P=null;confirmKey='';showScreen('game');nav(S.page||'home');renderAll();
+}
+function setAuthMsg(t,ok){$('#authMsg').innerHTML=t?`<div class="alert${ok?' ok':''}">${t}</div>`:''}
+function setAuthMode(m){authMode=m;document.querySelectorAll('.atab[data-m]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.m===m)));$('#regBox').hidden=(m!=='reg');$('#enterBtn').textContent=m==='reg'?'ادخل المنزل':'تسجيل الدخول';setAuthMsg('')}
+async function tryEnter(){
+  const nick=$('#nick').value.trim().replace(/\s+/g,'_').slice(0,16);
+  if(nick.length<2)return setAuthMsg('اكتب لقبًا من حرفين على الأقل (بدون اسمك الحقيقي).');
+  if(authMode==='reg'&&!pendingRole)return setAuthMsg('اختر لاعبك أولًا: الطفل السيبراني أو ولي الأمر.');
+  const key=nick.toLowerCase(),btn=$('#enterBtn');
+  btn.disabled=true;setAuthMsg('جارٍ الاتصال بالخادم…',true);
+  const rem=await sb(`players?nick=eq.${encodeURIComponent(key)}&select=state`);
+  btn.disabled=false;setAuthMsg('');
+  const remSt=rem&&rem[0]?rem[0].state:null,local=DB.users[key]&&DB.users[key].state;
+  if(authMode==='login'){
+    let st=remSt||local;if(remSt&&local&&local.time>remSt.time)st=local;
+    if(!st)return setAuthMsg(rem===undefined?'لا يوجد اتصال بالخادم ولا يوجد لاعب بهذا اللقب على هذا الجهاز.':'لا يوجد لاعب بهذا اللقب. اختر «لاعب جديد».');
+    return startGame(st);
+  }
+  if(remSt||local)return setAuthMsg('هذا اللقب مستخدم. اختر لقبًا آخر أو اضغط «لدي حساب».');
+  startGame(freshState(nick,pendingRole));
+}
+
+/* ---------- لوحة المشرف (#admin) ---------- */
+let ADM=[];
+async function openAdmin(){
+  showScreen('v-admin');$('#admTable').innerHTML='<p>جارٍ التحميل…</p>';
+  const r=await sb('players?select=nick,role,score,security_pct,devices_secured,challenges,correct,mistakes,time_taken,badge,updated_at,display:state->>nick&order=score.desc&limit=1000');
+  if(r===undefined){$('#admTable').innerHTML='<div class="alert">تعذّر الاتصال بالخادم.</div>';return}
+  ADM=r;
+  $('#admTable').innerHTML=`<p><b>${r.length}</b> لاعب</p><table class="lb"><thead><tr><th>اللقب</th><th>النوع</th><th>النقاط</th><th>الأمان</th><th>أجهزة</th><th>تحديات</th><th>صح</th><th>أخطاء</th><th>الوقت</th><th>الوسام</th><th>آخر نشاط</th></tr></thead><tbody>`+
+   r.map(x=>`<tr><td>${esc(x.display||x.nick)}</td><td>${x.role==='kid'?'طفل':'ولي أمر'}</td><td>${x.score}</td><td>${x.security_pct}%</td><td>${x.devices_secured}</td><td>${x.challenges}</td><td>${x.correct}</td><td>${x.mistakes}</td><td>${fmtTime(x.time_taken||0)}</td><td>${esc(x.badge||'')}</td><td>${new Date(x.updated_at).toLocaleString('ar-EG')}</td></tr>`).join('')+`</tbody></table>`;
+}
+function admCSV(){
+  const h=['nick','role','score','security_pct','devices_secured','challenges','correct','mistakes','time_seconds','badge','updated_at'];
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const csv='\ufeff'+h.join(',')+'\n'+ADM.map(x=>[x.display||x.nick,x.role,x.score,x.security_pct,x.devices_secured,x.challenges,x.correct,x.mistakes,x.time_taken,x.badge,x.updated_at].map(q).join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='cyber-safe-home-players.csv';document.body.appendChild(a);a.click();a.remove();
+}
+
+/* ---------- الأحداث ---------- */
+function onPlanPointer(e){
+  if(!P||!P.edit)return;
+  const el=e.target.closest('[data-pid]');if(!el)return;
+  const id=el.dataset.pid,it=P.devs.find(x=>x.id===id)||P.labels.find(x=>x.id===id);if(!it)return;
+  P.sel=id;document.querySelectorAll('#planIn .sel').forEach(n=>n.classList.remove('sel'));el.classList.add('sel');renderInsp();
+  dragState={it,el,sx:e.clientX,sy:e.clientY,ox:it.x,oy:it.y,moved:false};
+  try{el.setPointerCapture(e.pointerId)}catch(x){}
+  e.preventDefault();
+}
+document.addEventListener('pointerdown',e=>{
+  if(e.target.closest('#planIn'))return onPlanPointer(e);
+  const pi=e.target.closest('[data-pal]');
+  if(pi){dragState={pal:pi.dataset.pal,sx:e.clientX,sy:e.clientY,ghost:null,moved:false,label:pi.textContent.trim()}}
+});
+document.addEventListener('pointermove',e=>{
+  const d=dragState;if(!d)return;
+  if(d.pal){
+    if(!d.moved&&Math.hypot(e.clientX-d.sx,e.clientY-d.sy)>10){d.moved=true;const g=document.createElement('div');g.className='ghostpi';g.textContent=d.label;document.body.appendChild(g);d.ghost=g}
+    if(d.ghost){d.ghost.style.left=e.clientX+'px';d.ghost.style.top=e.clientY+'px'}
+    return;
+  }
+  const k=P.scale||1,dx=(e.clientX-d.sx)/k,dy=(e.clientY-d.sy)/k;
+  if(Math.abs(dx)+Math.abs(dy)>3)d.moved=true;
+  const w=d.it.w||120,h=d.it.h||36;
+  d.it.x=Math.round(Math.max(0,Math.min(900-w,d.ox+dx)));d.it.y=Math.round(Math.max(0,Math.min(560-h-20,d.oy+dy)));
+  d.el.style.left=d.it.x+'px';d.el.style.top=d.it.y+'px';
+});
+document.addEventListener('pointerup',e=>{
+  const d=dragState;if(!d)return;dragState=null;
+  if(d.pal){
+    if(d.ghost)d.ghost.remove();
+    const o=$('#planOut');
+    if(d.moved&&o){const r=o.getBoundingClientRect();
+      if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom){const k=P.scale||1;addPlanDev(d.pal,(e.clientX-r.left)/k-40,(e.clientY-r.top)/k-40);return}
+      return}
+    addPlanDev(d.pal,300+Math.random()*200,200+Math.random()*120);
+  }
+});
+document.addEventListener('click',e=>{
+  const pd=e.target.closest('#planIn [data-pid]');
+  if(pd&&!P.edit){const it=P.devs.find(x=>x.id===pd.dataset.pid);const g=it&&PLAN_MAP[it.devId];if(g)openDevice(g);else if(it)toast(it.ar+': جهاز إضافي في تصميمك. الحالة: '+({danger:'غير آمن',warning:'يحتاج فحص',safe:'آمن'})[it.status]);return}
+  const el=e.target.closest('[data-act]');if(!el)return;const a=el.dataset.act;
+  switch(a){
+   case 'start':showScreen('v-auth');setAuthMode('reg');break;
+   case 'atab':setAuthMode(el.dataset.m);break;
+   case 'pick':pendingRole=el.dataset.role;document.querySelectorAll('.pcard').forEach(c=>c.setAttribute('aria-checked',String(c===el)));document.documentElement.dataset.role=pendingRole;break;
+   case 'enter':tryEnter();break;
+   case 'logout':persist();S=null;P=null;closeOv();document.documentElement.removeAttribute('data-role');pendingRole=null;document.querySelectorAll('.pcard').forEach(c=>c.setAttribute('aria-checked','false'));$('#nick').value='';showScreen('v-auth');setAuthMode('login');setAuthMsg('تم تسجيل الخروج. اكتب لقبك للعودة إلى تقدمك.',true);break;
+   case 'nav':nav(el.dataset.p);break;
+   case 'room':S.room=el.dataset.room;renderHome();break;
+   case 'hideguide':S.guide=false;persist();renderHome();break;
+   case 'dev':if(ui&&ui.stage==='json')break;{const id=el.dataset.id;if(!$('#ov').hidden)closeOv();openDevice(id)}break;
+   case 'close':{const wasCel=ui&&ui.stage==='cel';const had=ui&&ui.id;closeOv();if(had||wasCel)afterClose();break}
+   case 'opt':{const t=tasks(ui.id)[S.dev[ui.id].idx];const i=+el.dataset.i;if(t.multi){const k=ui.sel.indexOf(i);k<0?ui.sel.push(i):ui.sel.splice(k,1);ui.warn='';renderModal()}else{ui.warn='';answerSingle(i)}break}
+   case 'check':answerMulti();break;
+   case 'next':ui.stage='task';ui.warn='';ui.r={pw:'12345678',enc:'WEP',wps:true,ad:'admin'};renderModal();break;
+   case 'wps':ui.r.wps=!ui.r.wps;renderModal();break;
+   case 'suggest':suggest();renderModal();break;
+   case 'secure':answerRouter();break;
+   case 'aopt':answerAttack(+el.dataset.i);break;
+   case 'atkclose':closeOv();afterClose();break;
+   case 'toreport':closeOv();nav('report');break;
+   case 'lvl':openLevel();break;
+   case 'print':window.print();break;
+   case 'admrefresh':openAdmin();break;
+   case 'admcsv':admCSV();break;
+   case 'admback':location.hash='';showScreen('v-welcome');break;
+   case 'lbf':lbFilter=el.dataset.f;renderBoard();break;
+   case 'dlcert':try{const cv=$('#cert');const a2=document.createElement('a');a2.href=cv.toDataURL('image/png');a2.download='certificate-'+S.nick+'.png';document.body.appendChild(a2);a2.click();a2.remove();toast('جارٍ تنزيل الشهادة…')}catch(x){toast('اضغط مطولًا على الصورة لحفظها')}break;
+   case 'restartp':if(confirmKey!=='restart'){confirmKey='restart';renderReport();break}confirmKey='';{const st=freshState(S.nick,S.role);startGame(st)}break;
+   case 'pedit':P.edit=!P.edit;P.sel=null;confirmKey='';renderPlan();break;
+   case 'pgrid':P.grid=!P.grid;$('#planIn').classList.toggle('grid',P.grid);break;
+   case 'plabel':{const l={id:'l'+Date.now(),text:'غرفة جديدة',x:380,y:250};P.labels.push(l);P.sel=l.id;renderCanvas();renderInsp();break}
+   case 'pclear':if(confirmKey!=='clear'){confirmKey='clear';renderPlan();break}confirmKey='';P.devs=[];P.labels=[];P.sel=null;renderPlan();break;
+   case 'psave':planSave();break;
+   case 'pexport':jsonModal('exp');break;
+   case 'pimport':jsonModal('imp');break;
+   case 'jimport':try{const j=JSON.parse($('#jtxt').value);if(!Array.isArray(j.devs))throw 0;P.devs=j.devs.map(d=>({id:String(d.id||'d'+Math.random()),devId:d.devId||d.id,e:d.e||'📦',ar:d.ar||'جهاز',x:+d.x||0,y:+d.y||0,w:+d.w||80,h:+d.h||80,status:['danger','warning','safe'].includes(d.status)?d.status:'warning',note:String(d.note||'').slice(0,20)}));P.labels=(j.labels||[]).map((l,i)=>({id:'l'+i+Date.now(),text:String(l.text||'غرفة').slice(0,20),x:+l.x||0,y:+l.y||0}));P.sel=null;closeOv();renderPlan();toast('تم الاستيراد. لا تنس الحفظ.')}catch(x){$('#jmsg').innerHTML='<div class="alert">النص غير صالح. تأكد أنه JSON صحيح.</div>'}break;
+   case 'pstatus':{const d=P.devs.find(x=>x.id===P.sel);if(d){d.status=el.dataset.s;renderCanvas();renderInsp()}break}
+   case 'pdel':P.devs=P.devs.filter(x=>x.id!==P.sel);P.labels=P.labels.filter(x=>x.id!==P.sel);P.sel=null;renderCanvas();renderInsp();break;
+  }
+});
+document.addEventListener('input',e=>{
+  if(ui&&ui.r){if(e.target.id==='r-pw'){ui.r.pw=e.target.value;meters()}if(e.target.id==='r-ad'){ui.r.ad=e.target.value;meters()}}
+  if(P&&P.edit){
+    if(e.target.id==='psz'){const d=P.devs.find(x=>x.id===P.sel);if(d){d.w=d.h=+e.target.value;const el=document.querySelector(`#planIn [data-pid="${d.id}"]`);if(el){el.style.width=d.w+'px';el.style.height=d.h+'px'}}}
+    if(e.target.id==='pnote'){const d=P.devs.find(x=>x.id===P.sel);if(d){d.note=e.target.value;const el=document.querySelector(`#planIn [data-pid="${d.id}"] .lb2`);if(el)el.textContent=d.note||d.ar}}
+    if(e.target.id==='ptxt'){const l=P.labels.find(x=>x.id===P.sel);if(l){l.text=e.target.value;const el=document.querySelector(`#planIn [data-pid="${l.id}"]`);if(el)el.textContent=l.text}}
+  }
+});
+document.addEventListener('change',e=>{if(ui&&ui.r&&e.target.id==='r-enc')ui.r.enc=e.target.value});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.id==='nick'){tryEnter();return}
+  if(e.key==='Escape'&&!$('#ov').hidden&&!atk){const had=ui&&ui.id;closeOv();if(had)afterClose()}
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('#planIn .pd')&&!P.edit){e.preventDefault();e.target.click()}
+});
+$('#ov').addEventListener('click',e=>{if(e.target.id==='ov'&&!atk){const had=ui&&ui.id;closeOv();if(had)afterClose()}});
+window.addEventListener('resize',()=>{if(S&&S.page==='plan')fitPlan()});
+setInterval(()=>{if(S&&!document.hidden&&!$('#game').hidden){S.time++;if(S.time%15===0)persist()}},1000);
+window.addEventListener('pagehide',persist);
+window.addEventListener('online',()=>{if(S)remotePush()});
+window.addEventListener('hashchange',()=>{if(location.hash==='#admin')openAdmin()});
+if(location.hash==='#admin')openAdmin();
+})();
+
+</script>
+</body>
+</html>
